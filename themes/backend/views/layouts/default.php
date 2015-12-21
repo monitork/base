@@ -28,6 +28,7 @@
       </div>
     </div>
   </div>
+  <?php echo $template['partials']['footer']; ?>
   <!-- Script File -->
   <script src="<?php echo site_url('/assets/vendor/jquery.js')?>"></script>
   <script src="<?php echo site_url('/assets/vendor/bootstrap/js/bootstrap.min.js')?>"></script>

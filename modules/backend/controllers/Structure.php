@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Content extends Backend_controller {
+class Structure extends Backend_controller {
 	public function __construct()
 	{
 		parent::__construct();
-	}	
+	}
 	public function index()
 	{
 		$this->template

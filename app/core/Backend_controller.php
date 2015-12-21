@@ -12,6 +12,7 @@ class Backend_Controller extends My_Controller
     $this->template
     ->enable_parser(FALSE)
     ->set_partial('header', 'partials/header')
+    ->set_partial('footer', 'partials/footer')
     ->title('Admin')
     ->set_theme('backend')
     ->set_layout('default');
