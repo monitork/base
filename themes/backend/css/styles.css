@@ -1,0 +1,414 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    padding-top: 39px;
+    margin-bottom: 70px;
+    color: #333;
+    background: #fff;
+    font-size: 13px;
+    font-family: "Lucida Grande", "Lucida Sans Unicode", "DejaVu Sans", "Lucida Sans", sans-serif;
+}
+
+h1.tit {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+h4.tit_col a {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+th {
+    text-transform: uppercase;
+}
+
+.table > thead > tr > th {
+    border-bottom: 1px solid #dddddd;
+    background: #f0f0f0;
+}
+
+.table-responsive {
+    border-top: 1px solid #dddddd;
+}
+
+.toolbar {
+    font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif;
+    background-color: #0f0f0f;
+    box-shadow: -1px 0 3px 1px rgba(0, 0, 0, 0.3333);
+}
+
+.navbar {
+    min-height: 39px;
+}
+
+.navbar > .container-fluid .navbar-brand {
+    font-size: 14px;
+    color: #fff;
+    padding: 10px 15px;
+    height: auto;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+    border: 0;
+}
+
+/*
+ * Sidebar
+ */
+
+/* Hide for mobile, show later */
+.sidebar {
+    display: none;
+}
+
+.sidebar a {
+    color: #565656;
+}
+
+.color {
+    width: 180px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.sidebar_c {
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0 -15px;
+    padding: 0 15px;
+}
+
+.form-group .left {
+    float: left;
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 40px;
+        bottom: 0;
+        left: 0;
+        z-index: 1031;
+        display: block;
+
+        background-color: #f5f5f5;
+        border-right: 1px solid #aaaaaa;
+        box-shadow: -1px 0 5px 2px rgba(0, 0, 0, 0.3333);
+    }
+
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+    margin-right: -21px; /* 20px padding + 1px border */
+    margin-bottom: 20px;
+    margin-left: -20px;
+}
+
+.nav-sidebar > li a:hover,
+.nav-sidebar > li a:focus {
+    background: none;
+}
+
+.nav-sidebar > li {
+    border-bottom: 1px solid #aaaaaa;
+    background: #FFFFFF;
+}
+
+.nav-sidebar > li > a {
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.navbar > .container-fluid .box_user .navbar-brand {
+    font-size: 13px;
+}
+
+.header_box {
+    height: 20px;
+    width: 100%;
+    background: #e0e0d8;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    color: #000;
+    background-color: #FFFFFF;
+    font-weight: bold;
+}
+
+.nav-sidebar > .active > a span,
+.nav-sidebar > .active > a:hover span,
+.nav-sidebar > .active > a:focus span {
+    text-decoration: underline;
+}
+
+.sidebar a span {
+    font-size: 98%;
+}
+
+.sidebar a span:hover {
+    text-decoration: underline;
+}
+
+/*
+ * Main content
+ */
+
+@media (min-width: 768px) {
+    .main {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+}
+
+.main .page-header {
+    margin-top: 0;
+}
+
+/*
+ * Placeholder dashboard ideas
+ */
+
+.placeholders {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.placeholders h4 {
+    margin-bottom: 0;
+}
+
+.placeholder {
+    margin-bottom: 20px;
+}
+
+.placeholder img {
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.btn_c_1 {
+    padding: 2px 1em;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 20px;
+}
+
+.btn_c_1a {
+    font-weight: bold;
+    padding: 2px 1em;
+    line-height: 1.5;
+    border-radius: 20px;
+}
+
+.btn_c_2 {
+    padding: 2px 1em;
+    /*font-size: 13px;*/
+    line-height: 1.5;
+    border-radius: 20px;
+}
+
+.header-1 {
+    margin-bottom: 15px;
+}
+
+.text-render {
+    font-size: small;
+    clear: both;
+    margin: 0 0 0 -10px;
+    position: absolute;
+    bottom: 0;
+}
+
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a {
+    background: #f0f0f0;
+    border-top: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    margin-right: 0;
+    border-radius: 0;
+    border-right: 1px solid #dddddd;
+    font-size: 13px;
+    padding: 7px 20px;
+}
+
+.nav-tabs li:last-child a {
+    border-top-right-radius: 4px;
+}
+
+.nav-tabs li:first-child a {
+    border-top-left-radius: 4px;
+    border-left: 1px solid #dddddd;
+}
+
+label.required::after {
+    content: ' *';
+    color: red;
+}
+
+.input_text_c_4 {
+    max-width: 400px;
+}
+
+.input_text_c_3 {
+    max-width: 300px;
+}
+
+.input_text_c_2 {
+    max-width: 200px;
+}
+
+.input_text_c_1 {
+    max-width: 100px;
+}
+
+.no {
+    width: 40px;
+}
+
+.content_nav {
+    margin-top: 15px;
+}
+
+.content_nav > li > a:hover {
+    background: none;
+}
+
+.content_nav > li > a {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0;
+}
+
+.content_nav > li {
+    border-top: 1px solid #aaaaaa;
+    padding: 10px 0 5px 0;
+}
+
+.content_nav > li .help-block {
+    padding: 0 15px;
+}
+
+.content_nav > li > a i {
+    color: #aaaaaa;
+}
+
+.nav_c {
+    margin-bottom: 15px;
+}
+
+.tb_action {
+    width: 110px;
+}
+
+.right_add_content {
+    background: #f0f0f0;
+    border: 1px solid #aaaaaa;
+}
+
+.first_right {
+    padding: 15px;
+}
+
+.panel_c .panel-heading {
+    border-radius: 0;
+}
+
+.panel_c .panel-body {
+    background: #f5f5f5;
+    box-shadow: none;
+}
+
+.panel-group .panel_c {
+    border-radius: 0;
+    border-width: 1px 0 0 0;
+    box-shadow: none;
+}
+
+.panel-group .panel + .panel {
+    margin-top: 0;
+}
+
+.panel-group {
+    margin-bottom: 0;
+}
+
+.description_e {
+    display: none;
+}
+
+.tab-content {
+    padding: 20px 20px 7px 20px;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #ddd;
+}
+
+.tab_c {
+    margin-bottom: 15px;
+}
+
+.alert_c {
+    margin-top: 20px;
+}
+
+.navbar_c .container-fluid {
+    background: #000000;
+}
+
+.size_box .checkbox {
+    display: inline-block;
+}
+
+.remove_c {
+    color: red;
+}
+#Image .input-group{
+    margin-bottom: 10px;
+}
+.bootstrap-tagsinput{
+    width: 100%;
+    min-height: 45px;
+}
+ul.categories li,
+ul.categories{
+    list-style: none;
+}
+ul.categories {
+    padding: 0;
+}
+ul.categories ul{
+    padding-left: 20px;
+}
+.content_c legend{
+  font-size: 13px;
+  font-weight: bold;
+}
+.content_c fieldset label{
+  margin-right: 10px;
+}
