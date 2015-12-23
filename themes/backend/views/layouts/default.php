@@ -55,11 +55,9 @@
   });
   </script>
   <script type="text/javascript">
-
   var button = document.getElementById( 'btnSelectImg' );
-
   button.onclick = function() {
-    CKFinder.popup( {
+    CKFinder.modal( {
       chooseFiles: true,
       width: 800,
       height: 600,
@@ -67,18 +65,24 @@
         finder.on( 'files:choose', function( evt ) {
           var file = evt.data.files.first();
           var output = document.getElementById( 'output' );
-          // output.innerHTML = 'Selected: ' + file.get( 'name' ) + '<br>URL: ' + file.getUrl() +'<img src="'+ file.getUrl() +'"/>';
+          // output.innerHTML = 'Selected: ' + file.get( 'name' ) + '<br>URL: ' + file.getUrl();
           output.innerHTML = '<img src="'+ file.getUrl() +'"/>';
         } );
         finder.on( 'file:choose:resizedImage', function( evt ) {
           var output = document.getElementById( 'output' );
+          // output.innerHTML = 'Selected resized image: ' + evt.data.file.get( 'name' ) + '<br>url: ' + evt.data.resizedUrl;
           output.innerHTML = '<img src="'+evt.data.resizedUrl +'"/>';
-          // output.innerHTML = 'Selected resized image: ' + evt.data.file.get( 'name' ) + '<br>url: ' + evt.data.resizedUrl +'<img src="'+evt.data.resizedUrl +'"/>';
         } );
       }
     } );
   };
+  </script>
 
+  <script type="text/javascript">
+  CKFinder.widget( 'media', {
+    width: '100%',
+    height: 500
+  } );
   </script>
   <script src="<?php echo site_url('/themes/backend/js/script.js')?>"></script>
   <!-- End/script File -->

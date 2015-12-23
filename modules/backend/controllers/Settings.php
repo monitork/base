@@ -5,19 +5,26 @@ class Settings extends Backend_controller {
 	public function __construct()
 	{
 		parent::__construct();
+		$this->load->model('setting_m');
 	}
 	public function index()
 	{
+		if(!empty($this->input->post('settings'))){
+			$this -> setting_m->updateSetting($this->input->post('settings'));
+		}
 		$this->template
-		->title('Content')
-		->build('content/index');
+		->title('General Settings')
+		->build('settings/index');
 	}
 
-	public function add($id = 0){
-		var_dump($id);
-		$this->load->view('welcome_message');
+	public function email(){
+		$this->template
+		->title('Email Settings')
+		->build('settings/email');
 	}
-	public function delete(){
-		$this->load->view('welcome_message');
+	public function reading(){
+		$this->template
+		->title('Reading Settings')
+		->build('settings/reading');
 	}
 }

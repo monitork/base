@@ -10,7 +10,7 @@ html {
 
 body {
   padding-top: 39px;
-  margin-bottom: 70px;
+  margin-bottom: 40px;
   color: #333;
   background: #fff;
   font-size: 13px;
@@ -565,4 +565,7 @@ edit.phpmedia="all"
 #output{
   max-height: 200px;
   overflow: hidden;
+}
+.text-nomal{
+  font-weight: 400;
 }

@@ -1,5 +1,6 @@
 <?php $active = $this->uri->segment(2);
-$active1 = $this->uri->segment(1); ?>
+$active1 = $this->uri->segment(1);
+$active2 = $this->uri->segment(3); ?>
 
 <nav class="navbar navbar-inverse navbar-fixed-top toolbar navbar_c">
   <div class="container-fluid">
@@ -35,7 +36,7 @@ $active1 = $this->uri->segment(1); ?>
       </ul>
     </li>
     <li class="<?php ($active == 'products') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/products') ?>"><i class="fa fa-cubes"></i> <span>Products</span></a>
+      <a href="<?php echo site_url('admin/products') ?>"><i class="fa fa-shopping-bag"></i> <span>Products</span></a>
       <ul class="nav sub_m">
         <li class="active"><a href="#">All product</a></li>
         <li><a href="#">Add new</a></li>
@@ -62,10 +63,13 @@ $active1 = $this->uri->segment(1); ?>
     <li class="<?php ($active == 'settings') ? print 'active' : print '' ?>">
       <a href="<?php echo site_url('admin/settings') ?>"><i class="fa fa-cogs"></i> <span>Settings</span></a>
       <ul class="nav sub_m">
-        <li class="active"><a href="#">General</a></li>
-        <li><a href="#">Reading</a></li>
-        <li><a href="#">Email</a></li>
+        <li class="<?php ($active == 'settings' && $active2 == '') ? print 'active' : print '' ?>"><?php echo anchor(site_url('admin/settings'),'General') ?></li>
+        <li class="<?php ($active == 'settings' && $active2 == 'reading') ? print 'active' : print '' ?>"><?php echo anchor(site_url('admin/settings/reading'),'Reading') ?></li>
+        <li class="<?php ($active == 'settings' && $active2 == 'email') ? print 'active' : print '' ?>"><?php echo anchor(site_url('admin/settings/email'),'Email') ?></li>
       </ul>
+    </li>
+    <li  class="<?php ($active == 'media') ? print 'active' : print '' ?>">
+      <a href="<?php echo site_url('admin/media') ?>"><i class="fa fa-film"></i> <span>Media</span></a>
     </li>
     <li class="<?php ($active == 'reports') ? print 'active' : print '' ?>">
       <a href="<?php echo site_url('admin/reports') ?>"><i class="fa fa-bar-chart"></i> <span>Reports</span></a>
