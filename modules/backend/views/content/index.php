@@ -2,12 +2,18 @@
   <?php
   echo $template['title'];
   ?>
-  <a href="http://wp.dev/wp-admin/post-new.php" class="page-title-action">Add New</a>
+  <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/add'),'Add New','class="page-title-action"');?>
 </h1>
 <ul class="subsubsub">
-  <li class="all"><a href="edit.php?post_type=post" class="current">All <span class="count">(3)</span></a> |</li>
-  <li class="publish"><a href="edit.php?post_status=publish&amp;post_type=post">Published <span class="count">(2)</span></a> |</li>
-  <li class="draft"><a href="edit.php?post_status=draft&amp;post_type=post">Draft <span class="count">(1)</span></a></li>
+  <li class="all">
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/all'),'All <span class="count">(3)</span>','class="current"');?>  |
+  </li>
+  <li class="publish">
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/published'),'Published <span class="count">(2)</span>','class=""');?>  |
+  </li>
+  <li class="draft">
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/draft'),'Draft <span class="count">(1)</span>','class=""');?>
+  </li>
 </ul>
 <form class="form-inline">
   <div class="form-group">
@@ -54,71 +60,55 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>
-          <input type="checkbox" name="name" value="">
-        </td>
-        <td>
-          <strong> <a href="#">Bài viết 1</a></strong>
-          <div class="row_action">
-            <span><a href="#">View</a> |</span>
-            <span><a href="#">Edit</a> |</span>
-            <span><a href="#"  class="trash">Move to Trash</a> |</span>
-            <span><a href="#" class="delete">Delete</a> </span>
+      <?php
+      if(isset($posts) && !empty($posts)):
+        foreach ($posts as $key => $post) :
+          ?>
+          <tr>
+            <td>
+              <input type="checkbox" name="name" value="">
+            </td>
+            <td>
+              <strong>
+                <?php echo anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']);?>
+              </strong>
+              <div class="row_action">
+                <span><a href="#">View</a> |</span>
+                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/posts/edit/'.$post['ID']),'Edit');?> |</span>
+                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/posts/trash/'.$post['ID']),'Move to Trash','class="trash"');?> |</span>
+                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/posts/delete/'.$post['ID']),'Delete','class="delete"');?> </span>
 
-          </div>
-        </td>
-        <td>
-          Admin
-        </td>
-        <td>
-          Category 1
-        </td>
-        <td>
-          2015/11/19 <br>
-          Published
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input type="checkbox" name="name" value="">
-        </td>
-        <td>
-          <strong> <a href="#">Bài viết 2</a></strong>
-          <div class="row_action">
-            <span><a href="#">View</a> |</span>
-            <span><a href="#">Edit</a> |</span>
-
-            <span><a href="#"  class="trash">Move to Trash</a> |</span>
-            <span><a href="#"  class="delete">Delete</a> </span>
-
-          </div>
-        </td>
-        <td>
-          Admin
-        </td>
-        <td>
-          Category 2
-        </td>
-        <td>
-          2015/11/19 <br>
-          Published
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
-<form class="form-inline" action="index.html" method="post">
-  <div class="form-group">
-    <select class="form-control input-sm" name="action">
-      <option value="-1">Bulk Actions</option>
-      <option value="trash">Public</option>
-      <option value="trash">Move to Trash</option>
-      <option value="trash">Delete</option>
-    </select>
+              </div>
+            </td>
+            <td>
+              Admin
+            </td>
+            <td>
+              Category 1
+            </td>
+            <td>
+              <?php echo date('Y-m-d',strtotime($post['post_date'])); ?> <br>
+              Published
+            </td>
+          </tr>
+          <?php
+        endforeach;
+        endif
+        ?>
+      </tbody>
+    </table>
   </div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-default btn-sm">Apply</button>
-  </div>
-</form>
+
+  <form class="form-inline" action="index.html" method="post">
+    <div class="form-group">
+      <select class="form-control input-sm" name="action">
+        <option value="-1">Bulk Actions</option>
+        <option value="trash">Public</option>
+        <option value="trash">Move to Trash</option>
+        <option value="trash">Delete</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-default btn-sm">Apply</button>
+    </div>
+  </form>

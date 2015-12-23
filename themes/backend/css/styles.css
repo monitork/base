@@ -210,12 +210,6 @@ th {
   font-weight: bold;
 }
 
-.nav-sidebar > .active > a span,
-.nav-sidebar > .active > a:hover span,
-.nav-sidebar > .active > a:focus span {
-  text-decoration: underline;
-}
-
 .sidebar a span {
   font-size: 98%;
 }
@@ -564,4 +558,11 @@ edit.phpmedia="all"
 }
 .table tr:hover span a.delete{
   color: brown;
+}
+#output img{
+  max-width: 100%;
+}
+#output{
+  max-height: 200px;
+  overflow: hidden;
 }

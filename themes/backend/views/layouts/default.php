@@ -33,7 +33,55 @@
   <script src="<?php echo site_url('/assets/vendor/jquery.js')?>"></script>
   <script src="<?php echo site_url('/assets/vendor/bootstrap/js/bootstrap.min.js')?>"></script>
   <?php echo $template['script']; ?>
+  <script src="<?php echo site_url('assets/vendor/ckeditor/ckeditor.js')?>"></script>
+  <script type="text/javascript" src="<?php echo site_url('assets/vendor/ckfinder/ckfinder.js');?>"></script>
+  <script type="text/javascript">
+  $(function() {
+    var editor = CKEDITOR.replace('editor1', {
+      filebrowserBrowseUrl : '<?php echo site_url('assets/vendor/ckfinder/ckfinder.html');?>',
+      filebrowserImageBrowseUrl : '<?php echo site_url('assets/vendor/ckfinder/ckfinder.html?Type=Images');?>',
+      filebrowserFlashBrowseUrl : '<?php echo site_url('assets/vendor/ckfinder/ckfinder.html?Type=Flash');?>',
+      filebrowserUploadUrl : '<?php echo site_url('assets/vendor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files');?>',
+      filebrowserImageUploadUrl : '<?php echo site_url('assets/vendor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images');?>',
+      filebrowserFlashUploadUrl : '<?php echo site_url('assets/vendor/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Flash');?>',
+      filebrowserWindowWidth : '800', filebrowserWindowHeight : '480',
+      toolbar :
+      [
+        ['Source','-', 'Bold', 'Italic', '-','TextColor','BGColor', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock', '-', 'NumberedList', 'BulletedList','Outdent','Indent', '-', 'Link', 'Unlink', '-','Image','Table','Maximize'],
+        // ['Paste','PasteText','PasteFromWord'],
+      ]
+    });
+    CKFinder.setupCKEditor( editor, "<?php echo site_url('assets/vendor/ckfinder/');?>" );
+  });
+  </script>
+  <script type="text/javascript">
+
+  var button = document.getElementById( 'btnSelectImg' );
+
+  button.onclick = function() {
+    CKFinder.popup( {
+      chooseFiles: true,
+      width: 800,
+      height: 600,
+      onInit: function( finder ) {
+        finder.on( 'files:choose', function( evt ) {
+          var file = evt.data.files.first();
+          var output = document.getElementById( 'output' );
+          // output.innerHTML = 'Selected: ' + file.get( 'name' ) + '<br>URL: ' + file.getUrl() +'<img src="'+ file.getUrl() +'"/>';
+          output.innerHTML = '<img src="'+ file.getUrl() +'"/>';
+        } );
+        finder.on( 'file:choose:resizedImage', function( evt ) {
+          var output = document.getElementById( 'output' );
+          output.innerHTML = '<img src="'+evt.data.resizedUrl +'"/>';
+          // output.innerHTML = 'Selected resized image: ' + evt.data.file.get( 'name' ) + '<br>url: ' + evt.data.resizedUrl +'<img src="'+evt.data.resizedUrl +'"/>';
+        } );
+      }
+    } );
+  };
+
+  </script>
   <script src="<?php echo site_url('/themes/backend/js/script.js')?>"></script>
   <!-- End/script File -->
+
 </body>
 </html>
