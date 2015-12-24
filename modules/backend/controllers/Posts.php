@@ -6,6 +6,8 @@ class Posts extends Backend_controller {
 	{
 		parent::__construct();
 		$this->load->model('posts_m');
+		$this->load->model('category_m');
+		$this->load->helper('menu');
 	}
 	public function index()
 	{
@@ -31,9 +33,11 @@ class Posts extends Backend_controller {
 		->set('posts', $data)
 		->build('content/index');
 	}
-	public function add($id = 0){
+	public function add(){
+		$data = $this->category_m->get_all('category');
 		$this->template
 		->title('Add new post')
+		->set('category',$data)
 		->build('content/add');
 	}
 	public function edit($id = 0){
@@ -44,5 +48,20 @@ class Posts extends Backend_controller {
 	}
 	public function delete($id = 0){
 		$this->load->view('welcome_message');
+	}
+	public function categories($id = 0)
+	{
+		$data = $this->category_m->get_all('category');
+		$this->template
+		->title('Categories')
+		->set('cates',$data)
+		->build('content/category');
+	}
+	public function tags($id = 0){
+		$data = $this->category_m->get_all('post_tag');
+		$this->template
+		->title('Tags')
+		->set('cates',$data)
+		->build('content/tags');
 	}
 }

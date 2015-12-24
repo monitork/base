@@ -27,6 +27,10 @@ h1.tit {
   padding: 9px 15px 4px 0;
   line-height: 29px;
 }
+h3.sub_tit{
+  font-size: 14px;
+  margin-top: 0;
+}
 h4.box{
   margin: 0;
   font-size: 14px;

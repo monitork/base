@@ -32,40 +32,7 @@
       <div class="panel panel-default">
         <div class="panel-heading"><h4 class="box">Categories</h4> </div>
         <div class="panel-body">
-          <ul class="categories">
-            <li>
-              <input type="checkbox" value="1" id="category_1" name="category[]">
-              <label for="category_1"> Nam</label>
-              <ul class="categories">
-                <li><input type="checkbox" value="4" id="category_4" name="category[]">
-                  <label for="category_4"> Áo bóng chày</label>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <input type="checkbox" value="2" id="category_2" name="category[]">
-              <label for="category_2"> Nữ</label>
-              <ul class="categories">
-                <li>
-                  <input type="checkbox" value="5" id="category_5" name="category[]">
-                  <label for="category_5"> Áo khoác</label>
-                </li>
-                <li>
-                  <input type="checkbox" value="6" id="category_6" name="category[]">
-                  <label for="category_6"> Áo sơ mi</label>
-                </li>
-                <li>
-                  <input type="checkbox" value="7" id="category_7" name="category[]">
-                  <label for="category_7"> Áo thun</label>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <input type="checkbox" value="3" id="category_3" name="category[]">
-              <label for="category_3"> Áo cặp</label>
-              <ul class="categories"></ul>
-            </li>
-          </ul>
+          <?php if(!empty($category)){ echo category_from_array($category);}?>
         </div>
       </div>
       <div class="panel panel-default">
