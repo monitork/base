@@ -1,7 +1,16 @@
 <?php $active = $this->uri->segment(2);
 $active1 = $this->uri->segment(1);
-$active2 = $this->uri->segment(3); ?>
+$active2 = $this->uri->segment(3);
 
+if($this->session->userdata('menu')){
+  $menu = $this->session->userdata('menu');
+}else{
+  $string = file_get_contents(FCPATH."themes/backend/js/menu.json");
+  $menu = json_decode($string, true);
+  $newdata = array('menu'  => $menu);
+  $this->session->set_userdata($newdata);
+}
+?>
 <nav class="navbar navbar-inverse navbar-fixed-top toolbar navbar_c">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -16,68 +25,24 @@ $active2 = $this->uri->segment(3); ?>
   </div>
 </nav>
 <div class="sidebar_c">
-  <ul class="nav nav-sidebar">
-    <li class="<?php ($active == '' && $active1 == 'admin') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin') ?>"><i class="fa fa-dashboard"></i> <span>Dashboard</span></a>
-    </li>
-    <li class="<?php ($active == 'posts') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/posts') ?>"><i class="fa fa-legal"></i> <span>Posts</span></a>
-      <ul class="nav sub_m">
-        <li class="active"><a href="#">All post</a></li>
-        <li><a href="#">Add new</a></li>
-      </ul>
-    </li>
-    <li class="<?php ($active == 'page') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/page') ?>"><i class="fa fa-file"></i> <span>Page</span></a>
-      <ul class="nav sub_m">
 
-        <li class="active"><a href="#">All Page</a></li>
-        <li><a href="#">Add new</a></li>
-      </ul>
-    </li>
-    <li class="<?php ($active == 'products') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/products') ?>"><i class="fa fa-shopping-bag"></i> <span>Products</span></a>
-      <ul class="nav sub_m">
-        <li class="active"><a href="#">All product</a></li>
-        <li><a href="#">Add new</a></li>
-      </ul>
-    </li>
+  <?php if(!empty($menu)):?>
+    <ul class="nav nav-sidebar">
+      <?php foreach ($menu['menus'] as $key => $m0): ?>
 
-    <li class="<?php ($active == 'structure') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/structure') ?>"><i class="fa fa-puzzle-piece"></i> <span>Structure</span></a>
-      <ul class="nav sub_m">
-
-        <li class="active"><a href="#">Categories</a></li>
-        <li><a href="#">Tags</a></li>
-        <li><a href="#">Menu</a></li>
-      </ul>
-    </li>
-    <li class="<?php ($active == 'users') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/users') ?>"><i class="fa fa-users"></i> <span>Users</span></a>
-      <ul class="nav sub_m">
-        <li class="active"><a href="#">All users</a></li>
-        <li><a href="#">Add user</a></li>
-        <li><a href="#">Your profile</a></li>
-      </ul>
-    </li>
-    <li class="<?php ($active == 'settings') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/settings') ?>"><i class="fa fa-cogs"></i> <span>Settings</span></a>
-      <ul class="nav sub_m">
-        <li class="<?php ($active == 'settings' && $active2 == '') ? print 'active' : print '' ?>"><?php echo anchor(site_url('admin/settings'),'General') ?></li>
-        <li class="<?php ($active == 'settings' && $active2 == 'reading') ? print 'active' : print '' ?>"><?php echo anchor(site_url('admin/settings/reading'),'Reading') ?></li>
-        <li class="<?php ($active == 'settings' && $active2 == 'email') ? print 'active' : print '' ?>"><?php echo anchor(site_url('admin/settings/email'),'Email') ?></li>
-      </ul>
-    </li>
-    <li  class="<?php ($active == 'media') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/media') ?>"><i class="fa fa-film"></i> <span>Media</span></a>
-    </li>
-    <li class="<?php ($active == 'reports') ? print 'active' : print '' ?>">
-      <a href="<?php echo site_url('admin/reports') ?>"><i class="fa fa-bar-chart"></i> <span>Reports</span></a>
-      <ul class="nav sub_m">
-        <li class="active"><a href="#">Products</a></li>
-        <li><a href="#">Reading</a></li>
-        <li><a href="#">Email</a></li>
-      </ul>
-    </li>
-  </ul>
+        <li class="<?php ($active == $m0['link']) ? print 'active' : print '' ?>">
+          <?php echo anchor(site_url(ADMIN_FOLDER.'/'.$m0['link']),'<i class="'.$m0['icon'].'"></i> <span>'.$m0['title'].'</span>');?>
+          <?php if(isset($m0['sub'])  && !empty($m0['sub']) ):?>
+            <ul class="nav sub_m">
+              <?php foreach ($m0['sub'] as $k => $m1): ?>
+                <li class="<?php ($active == $m0['link'] && $active2 == $m1['link']) ? print 'active' : print '' ?>">
+                  <?php echo anchor(site_url(ADMIN_FOLDER.'/'.$m0['link'].'/'.$m1['link']),$m1['title']) ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  <?php endif;?>
 </div>

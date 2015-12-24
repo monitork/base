@@ -1,0 +1,79 @@
+{
+  "menus":[
+    {
+      "title":"Dashboard",
+      "icon":"fa fa-dashboard",
+      "link":"",
+      "sub":[
+      ]
+    },
+    {
+      "title":"Posts",
+      "icon":"fa fa-legal",
+      "link":"posts",
+      "sub":[
+        {"title":"All post","link":""},
+        {"title":"Add new","link":"add"},
+        {"title":"Categories","link":"categories"},
+        {"title":"Tags","link":"tags"}
+      ]
+    },
+    {
+      "title":"Page",
+      "icon":"fa fa-file",
+      "link":"page",
+      "sub":[
+        {"title":"All page","link":""},
+        {"title":"Add new","link":"add"}
+      ]
+
+    },
+    {
+      "title":"Products",
+      "icon":"fa fa-shopping-bag",
+      "link":"products",
+      "sub":[
+        {"title":"All product","link":""},
+        {"title":"Add new","link":"add"},
+        {"title":"Categories","link":"categories"},
+        {"title":"Color","link":"color"},
+        {"title":"Size","link":"size"}
+      ]
+    },
+    {
+      "title":"Users",
+      "icon":"fa fa-users",
+      "link":"users",
+      "sub":[
+        {"title":"All users","link":""},
+        {"title":"Add user","link":"add"},
+        {"title":"Your profile","link":"profile"}
+      ]
+    },
+    {
+      "title":"Settings",
+      "icon":"fa fa-cogs",
+      "link":"settings",
+      "sub":[
+        {"title":"General","link":""},
+        {"title":"Reading","link":"reading"},
+        {"title":"Email","link":"email"}
+      ]
+    },
+    {
+      "title":"Media",
+      "icon":"fa fa-film",
+      "link":"media",
+      "sub":[
+      ]
+    },
+    {
+      "title":"Reports",
+      "icon":"fa fa-bar-chart",
+      "link":"reports",
+      "sub":[
+        {"title":"Cart","link":"cart"}
+      ]
+    }
+  ]
+}

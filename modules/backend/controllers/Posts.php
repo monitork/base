@@ -15,7 +15,22 @@ class Posts extends Backend_controller {
 		->set('posts', $data)
 		->build('content/index');
 	}
-
+	public function published()
+	{
+		$data = $this->posts_m->get_all('publish');
+		$this->template
+		->title('Posts')
+		->set('posts', $data)
+		->build('content/index');
+	}
+	public function draft()
+	{
+		$data = $this->posts_m->get_all('draft');
+		$this->template
+		->title('Posts')
+		->set('posts', $data)
+		->build('content/index');
+	}
 	public function add($id = 0){
 		$this->template
 		->title('Add new post')

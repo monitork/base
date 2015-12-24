@@ -6,13 +6,13 @@
 </h1>
 <ul class="subsubsub">
   <li class="all">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/all'),'All <span class="count">(3)</span>','class="current"');?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts'),'All <span class="count">(3)</span>',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
   </li>
   <li class="publish">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/published'),'Published <span class="count">(2)</span>','class=""');?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/published'),'Published <span class="count">(2)</span>',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
   </li>
   <li class="draft">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/draft'),'Draft <span class="count">(1)</span>','class=""');?>
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
   </li>
 </ul>
 <form class="form-inline">
@@ -71,6 +71,7 @@
             <td>
               <strong>
                 <?php echo anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']);?>
+                <?php ($post['post_status'] == 'draft')? print(' - <span class="post_state">Draft</span>') : print('')?>
               </strong>
               <div class="row_action">
                 <span><a href="#">View</a> |</span>
