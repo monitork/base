@@ -17,11 +17,18 @@
   <input type="hidden" name="redirect_to" value="<?php echo site_url(ADMIN_FOLDER) ?>" />
   <input type="hidden" name="testcookie" value="1" />
 </p>
+<br class="clear">
+
+  <?php if($message):?><p class="err"><?php echo $message;?></p><?php endif?>
+
 </form>
 <p id="nav">
   <?php echo anchor(site_url(ADMIN_FOLDER.'/users/lostpassword'),'Lost your password?','title="Password Lost and Found"')?>
 </p>
-
+<style media="screen">
+  .clear{clear: both;}
+  .err{color:red;}
+</style>
 <script type="text/javascript">
 function wp_attempt_focus(){
   setTimeout( function(){ try{
