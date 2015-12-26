@@ -70,7 +70,7 @@
             </td>
             <td>
               <strong>
-                <?php echo anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']);?>
+                <?php echo anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),($post['post_title'] == '')?'(no title)':$post['post_title']);?>
                 <?php ($post['post_status'] == 'draft')? print(' - <span class="post_state">Draft</span>') : print('')?>
               </strong>
               <div class="row_action">

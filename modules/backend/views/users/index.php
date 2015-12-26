@@ -41,7 +41,7 @@
 <div class="table-responsive">
   <?php
   $this->load->library('table');
-  $this->table->set_heading(form_checkbox('checkAll','all',false,'id="checkAll"'),anchor('','Title'), 'Author', 'Categories',anchor('','Date'));
+  $this->table->set_heading(form_checkbox('checkAll','all',false,'id="checkAll"'),anchor('','Username'), 'Name', 'Email','Role');
   $template = array(
     'table_open' => '<table class="table table-striped">',
     'heading_cell_start'    => '<td>',
@@ -58,6 +58,7 @@
       <span>'.anchor(site_url(ADMIN_FOLDER.'/user/edit/'.$u['ID']),'Edit').'</span>
       <span>'.anchor(site_url(ADMIN_FOLDER.'/user/delete/'.$u['ID']),'Delete','class="delete"').'</span>
       </div>',
+      $u['first_name'].' '.$u['last_name'] ,
       mailto($u['user_email'],$u['user_email']),
       '',
       '');

@@ -48,3 +48,5 @@
 
   </form>
 </div>
+<?php echo $template['partials']['ckeditor']; ?>
+<?php echo $template['partials']['ckfinder']; ?>

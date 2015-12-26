@@ -6,7 +6,7 @@
       <div class="panel-body">
         <ul>
           <li><i class="fa fa-legal"></i>  <?php echo anchor(site_url(ADMIN_FOLDER.'/posts'),'2 Post')?></li>
-          <li><i class="fa fa-cubes"></i>  <?php echo anchor(site_url(ADMIN_FOLDER.'/products'),'12 Products')?></li>
+          <li><i class="fa fa-shopping-bag"></i>  <?php echo anchor(site_url(ADMIN_FOLDER.'/products'),'12 Products')?></li>
           <li><i class="fa fa-file"></i>  <?php echo anchor(site_url(ADMIN_FOLDER.'/page'),'1 Page')?></li>
         </ul>
 

@@ -34,10 +34,13 @@ class Posts extends Backend_controller {
 		->build('content/index');
 	}
 	public function add(){
+
 		$data = $this->category_m->get_all('category');
 		$this->template
 		->title('Add new post')
 		->set('category',$data)
+		->set_partial('ckeditor', 'partials/ckeditor')
+		->set_partial('ckfinder', 'partials/ckfinder')
 		->build('content/add');
 	}
 	public function edit($id = 0){

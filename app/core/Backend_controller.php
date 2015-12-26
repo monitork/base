@@ -5,6 +5,9 @@ class Backend_Controller extends My_Controller
   public function __construct()
   {
     parent::__construct();
+    if(empty($this->session->userdata('fireant_admin_ss')) && $this->uri->segment(2) != 'users' &&  $this->uri->segment(3) != 'login'){
+      redirect(site_url(ADMIN_FOLDER.'/users/login'),'refresh');
+    }
     $this->load->helper('form');
     $this->load->library('form_validation');
     $this->load->helper('text');

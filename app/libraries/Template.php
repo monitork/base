@@ -27,6 +27,7 @@ class Template
     private $_title = '';
     private $_metadata = array();
     private $_script = array();
+    private $_script_meta = array();
     private $_style = array();
     private $_partials = array();
 
@@ -197,6 +198,7 @@ class Template
         $template['breadcrumbs'] = $this->_breadcrumbs;
         $template['metadata'] = implode("\n\t\t", $this->_metadata);
         $template['script'] = implode("\n\t\t", $this->_script);
+        $template['script_meta'] = implode("\n\t\t", $this->_script_meta);
         $template['style'] = implode("\n\t\t", $this->_style);
         $template['partials'] = array();
         // Assign by reference, as all loaded views will need access to partials
@@ -315,7 +317,11 @@ class Template
         return $this;
 
     }
-
+    public function set_script_meta($script_text)
+    {
+        $this->_script_meta[] = '<script type="text/javascript">'.$script_text.'</script>';
+        return $this;
+    }
     public function set_style($link)
     {
         $this->_style[] = '<link href="' . $link . '" rel="stylesheet">';
