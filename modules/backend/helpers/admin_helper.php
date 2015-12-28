@@ -39,12 +39,22 @@ if ( ! function_exists('category_from_array'))
     return $str;
   }
 }
-if(!function_exists('userRoel')){
-  function userRoel($capabilities = array()){
+if(!function_exists('userRoleName')){
+  function userRoleName($capabilities = array()){
     $role = unserialize(ADMIN_ROLE);
     foreach ($role as $m => $v) {
       if(isset($capabilities[$m]) && $capabilities[$m] == true){
         return $v;
+      }
+    }
+  }
+}
+if(!function_exists('userRoleKey')){
+  function userRoleKey($capabilities = array()){
+    $role = unserialize(ADMIN_ROLE);
+    foreach ($role as $m => $v) {
+      if(isset($capabilities[$m]) && $capabilities[$m] == true){
+        return $m;
       }
     }
   }

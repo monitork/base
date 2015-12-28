@@ -23,33 +23,19 @@
     <?php echo anchor(site_url(ADMIN_FOLDER.'/users/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
   </li>
 </ul>
-<form class="form-inline">
-  <div class="form-group">
-    <select class="form-control input-sm" name="action">
-      <option value="-1">All dates</option>
-      <option value="trash">09/2015</option>
-      <option value="trash">10/2015</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <select class="form-control input-sm" name="action">
-      <option value="-1">All Categories</option>
-      <option value="trash">Category 1</option>
-      <option value="trash">Category 2</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <input type="text" name="name" value="" class="form-control input-sm">
-  </div>
-  <div class="form-group">
-    <button type="submit" class="btn btn-default btn-sm">Filter</button>
-  </div>
-</form>
+<?php echo form_open(current_url(),array('class'=>'frm_filter form-inline'));?>
+<div class="form-group">
+  <?php echo form_input('name','','class="form-control input-sm"');?>
+</div>
+<div class="form-group">
+  <?php echo form_submit('submit','Filter','class="btn btn-default btn-sm"');?>
+</div>
+<?php echo form_close();?>
 <br class="clear">
 <div class="table-responsive">
   <?php
   $this->load->library('table');
-  $this->table->set_heading(form_checkbox('checkAll','all',false,'id="checkAll"'),anchor('','Username'), 'Name', 'Email','Role');
+  $this->table->set_heading(form_checkbox('checkAll','all',false,'id="checkAll"  onclick="check_all(this);"'),anchor('','Username'), 'Name', 'Email','Role');
   $template = array(
     'table_open' => '<table class="table table-striped">',
     'heading_cell_start'    => '<td>',
@@ -59,23 +45,23 @@
   if(isset($users) && !empty($users)){
     foreach ($users as $k => $u) {
       $this->table->add_row(
-      form_checkbox('checkItem'.$u['ID'],$u['ID'],false,'id="checkItem_'.$u['ID'].'"'),
-      '<strong>'.anchor(ADMIN_FOLDER.'/user/profile/1',$u['user_login']).'<strong>
+      form_checkbox('checkItem'.$u['ID'],$u['ID'],false,'id="checkItem_'.$u['ID'].'" class="check_item"'),
+      '<strong>'.anchor(ADMIN_FOLDER.'/users/profile/1',$u['user_login']).'<strong>
       <div class="row_action">
       <span><a href="#">View</a> |</span>
-      <span>'.anchor(site_url(ADMIN_FOLDER.'/user/edit/'.$u['ID']),'Edit').'</span>
-      <span>'.anchor(site_url(ADMIN_FOLDER.'/user/delete/'.$u['ID']),'Delete','class="delete"').'</span>
+      <span>'.anchor(site_url(ADMIN_FOLDER.'/users/edit/'.$u['ID']),'Edit').' |</span>
+      <span>'.anchor(site_url(ADMIN_FOLDER.'/users/delete/'.$u['ID']),'Delete','class="delete"').'</span>
       </div>',
       $u['first_name'].' '.$u['last_name'] ,
       mailto($u['user_email'],$u['user_email']),
-      userRoel($u['capabilities'])
+      userRoleName($u['capabilities'])
     );
-    }
-  }else {
-    $this->table->add_row('No have User yet.','','','','');
   }
-  echo $this->table->generate();
-  ?>
+}else {
+  $this->table->add_row('No have User yet.','','','','');
+}
+echo $this->table->generate();
+?>
 </div>
 
 <form class="form-inline" action="index.html" method="post">

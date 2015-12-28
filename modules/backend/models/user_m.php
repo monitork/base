@@ -2,9 +2,18 @@
 class User_m extends CI_Model
 {
   protected $_table = 'users';
-  public function get_all($publish= '')
+  public function get_all($publish = '',$filter = array())
   {
     $this->db->select('ID,user_login, user_email');
+    if($publish == 'public'){
+      $this->db->where('user_status',0);
+    }elseif ($publish == 'draft'){
+      $this->db->where('user_status',1);
+    }
+    if(!empty($filter)){
+      $this->db->like('user_login',$filter['name']);
+    }
+    $this->db->order_by('ID','desc');
     $query = $this->db->get($this->_table);
     $result = $query ->result_array();
     if(!empty($result)){
@@ -22,6 +31,17 @@ class User_m extends CI_Model
     $this->db->where('meta_key',$key);
     $result = $this->db ->get('usermeta') ->row();
     return $result->meta_value;
+  }
+  function get_a_id($id){
+    $this->db->select('ID,user_login, user_email,user_pass,user_url');
+    $this->db->where('ID',$id);
+    $result = $this->db->get($this->_table)->row();
+    if(!empty($result)){
+      $result->first_name = $this->get_user_meta($id,'first_name');
+      $result->last_name = $this->get_user_meta($id,'last_name');
+      $result->capabilities = $this->get_user_meta($id,'wp_capabilities');
+    }
+    return $result;
   }
   function get_a_name($name){
     $this->db->select('ID,user_login, user_email,user_pass');

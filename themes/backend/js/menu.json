@@ -46,8 +46,7 @@
       "link":"users",
       "sub":[
         {"title":"All users","link":""},
-        {"title":"Add user","link":"add"},
-        {"title":"Your profile","link":"profile"}
+        {"title":"Add user","link":"add"}
       ]
     },
     {

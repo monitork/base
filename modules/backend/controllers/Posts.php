@@ -7,7 +7,6 @@ class Posts extends Backend_controller {
 		parent::__construct();
 		$this->load->model('posts_m');
 		$this->load->model('category_m');
-		$this->load->helper('menu');
 	}
 	public function index()
 	{

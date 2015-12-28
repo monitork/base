@@ -7,15 +7,47 @@ class Users extends Backend_controller {
 		parent::__construct();
 		$this->load->model('user_m');
 	}
+	//------------------------------ LIST-----------------------------------------
 	public function index()
 	{
-		$data = $this->user_m->get_all();
+		$filter = array();
+		if(!empty($this->input->post('name'))){
+			$filter = $this->input->post();
+		}
+		$data = $this->user_m->get_all('',$filter);
 		$this->template
-		->title('User')
+		->title('All users')
 		->set('users',$data)
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('users/index');
 	}
+	public function published()
+	{
+		$filter = array();
+		if(!empty($this->input->post('name'))){
+			$filter = $this->input->post();
+		}
+		$data = $this->user_m->get_all('public',$filter);
+		$this->template
+		->title('User published')
+		->set('users',$data)
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('users/index');
+	}
+	public function draft()
+	{
+		$filter = array();
+		if(!empty($this->input->post('name'))){
+			$filter = $this->input->post();
+		}
+		$data = $this->user_m->get_all('draft',$filter);
+		$this->template
+		->title('User draft')
+		->set('users',$data)
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('users/index');
+	}
+	//------------------------  END LIST -----------------------------------------
 	public function login(){
 		$this->load->helper('security');
 		if(!empty($this->session->userdata('fireant_admin_ss'))){
@@ -161,11 +193,163 @@ class Users extends Backend_controller {
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('users/add');
 	}
-	public function delete(){
+	public function edit($id = 0){
+		if ($this->form_validation->run() == true) {
 
+		}
+		$user = $this->user_m->get_a_id($id);
+		if(!empty($user)){
+
+		}else {
+			echo show_404();
+		}
+
+		$this->template->set('user_login', array(
+			'name' => 'user_login',
+			'id' => 'user_login',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->user_login,
+		));
+
+		$this->template->set('email', array(
+			'name' => 'email',
+			'id' => 'email',
+			'type' => 'email',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->user_email,
+		));
+		$this->template->set('first_name', array(
+			'name' => 'first_name',
+			'id' => 'first_name',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->first_name,
+		));
+		$this->template->set('last_name', array(
+			'name' => 'last_name',
+			'id' => 'last_name',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->last_name,
+		));
+		$this->template->set('url', array(
+			'name' => 'url',
+			'id' => 'url',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->user_url,
+		));
+		$this->template->set('role', array(
+			'name' => 'role',
+			'option' => unserialize(ADMIN_ROLE),
+			'selected' => userRoleKey(unserialize($user->capabilities)),
+			'extra' => array('class'=>'form-control input-sm','id'=>'role'),
+		));
+		$this->template->set('pass', array(
+			'name' => 'pass',
+			'id' => 'pass',
+			'type' => 'password',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => '',
+		));
+		$this->form_validation->set_rules('user_login', 'Username', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required');
+		$this->form_validation->set_rules('pass', 'Password', 'required');
 		$this->template
 		->title('Edit user')
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('users/add');
 	}
+	public function profile($id = 0){
+		if ($this->form_validation->run() == true) {
+
+		}
+		if($id == 0){
+			$id = $this->session->userdata('fireant_admin_ss')['id'];
+		}
+		$user = $this->user_m->get_a_id($id);
+		if(!empty($user)){
+
+		}else {
+			echo show_404();
+		}
+
+		$this->template->set('user_login', array(
+			'name' => 'user_login',
+			'id' => 'user_login',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->user_login,
+		));
+
+		$this->template->set('email', array(
+			'name' => 'email',
+			'id' => 'email',
+			'type' => 'email',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->user_email,
+		));
+		$this->template->set('first_name', array(
+			'name' => 'first_name',
+			'id' => 'first_name',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->first_name,
+		));
+		$this->template->set('last_name', array(
+			'name' => 'last_name',
+			'id' => 'last_name',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->last_name,
+		));
+		$this->template->set('url', array(
+			'name' => 'url',
+			'id' => 'url',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->user_url,
+		));
+		$this->template->set('role', array(
+			'name' => 'role',
+			'option' => unserialize(ADMIN_ROLE),
+			'selected' => userRoleKey(unserialize($user->capabilities)),
+			'extra' => array('class'=>'form-control input-sm','id'=>'role'),
+		));
+		$this->template->set('pass', array(
+			'name' => 'pass',
+			'id' => 'pass',
+			'type' => 'password',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => '',
+		));
+		$this->form_validation->set_rules('user_login', 'Username', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required');
+		$this->form_validation->set_rules('pass', 'Password', 'required');
+		$this->template
+		->title('User profile')
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('users/profile');
+	}
+	public function delete(){
+
+		$this->template
+		->title('Delete user')
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('users/add');
+	}
+
 }
