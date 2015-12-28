@@ -10,7 +10,7 @@
   <?php echo form_password('pwd','',array('id'=>'user_pass','class'=>'input','size'=>'20'));?>
 </p>
 <p class="forgetmenot">
-  <?php echo form_label(form_checkbox('rememberme','forever',false,'id="rememberme"').'Remember Me','rememberme');?>
+  <?php echo form_label(form_checkbox('rememberme','1',false,'id="rememberme"').'Remember Me','rememberme');?>
 </p>
 <p class="submit">
   <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="Log In" />
@@ -28,6 +28,13 @@
 <style media="screen">
   .clear{clear: both;}
   .err{color:red;}
+  input[type=radio], input[type=checkbox]{
+    -moz-appearance: checkbox;
+    -webkit-appearance: checkbox;
+  }
+  input[type=checkbox]:checked:before{
+    content: ''
+  }
 </style>
 <script type="text/javascript">
 function wp_attempt_focus(){

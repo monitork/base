@@ -20,7 +20,7 @@ if($this->session->userdata('menu')){
     </div>
     <div class="text-right navbar-right box_user">
       <?php echo anchor(site_url('admin/users/profile'),'<i class="fa fa-user"></i> Admin',array('class'=>'navbar-brand'));?>
-      <?php echo anchor(site_url('users/logout'),'<i class="fa fa-sign-out"></i> Logout',array('class'=>'navbar-brand'));?>
+      <?php echo anchor(site_url(ADMIN_FOLDER.'/users/logout'),'<i class="fa fa-sign-out"></i> Logout',array('class'=>'navbar-brand'));?>
     </div>
   </div>
 </nav>
