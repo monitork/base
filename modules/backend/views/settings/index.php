@@ -45,6 +45,7 @@
     echo form_dropdown('settings[default_role]', $options, getSetting('default_role'),'class="form-control input-sm"');?>
   </div>
 </div>
+
 <div class="form-group">
   <div class="col-sm-3">
     <?php echo form_submit('submit','Save Changes','class="btn btn-primary pull-right btn-sm"');?>

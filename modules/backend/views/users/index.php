@@ -1,18 +1,26 @@
+<?php if ($message): ?>
+  <div class="alert alert-info alert_c">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <?php echo $message; ?>
+  </div>
+<?php endif ?>
 <h1 class="tit">
   <?php
   echo $template['title'];
   ?>
-  <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/add'),'Add New','class="page-title-action"');?>
+  <?php echo anchor(site_url(ADMIN_FOLDER.'/users/add'),'Add New','class="page-title-action"');?>
 </h1>
 <ul class="subsubsub">
   <li class="all">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts'),'All <span class="count">(3)</span>',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/users'),'All <span class="count">(3)</span>',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
   </li>
   <li class="publish">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/published'),'Published <span class="count">(2)</span>',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/users/published'),'Published <span class="count">(2)</span>',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
   </li>
   <li class="draft">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/posts/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/users/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
   </li>
 </ul>
 <form class="form-inline">
@@ -60,66 +68,26 @@
       </div>',
       $u['first_name'].' '.$u['last_name'] ,
       mailto($u['user_email'],$u['user_email']),
-      '',
-      '');
+      userRoel($u['capabilities'])
+    );
     }
   }else {
     $this->table->add_row('No have User yet.','','','','');
   }
   echo $this->table->generate();
   ?>
-  <table class="table table-striped ">
-    <tbody>
-      <?php
-      if(isset($posts) && !empty($posts)):
-        foreach ($posts as $key => $post) :
-          ?>
-          <tr>
-            <td>
-              <input type="checkbox" name="name" value="">
-            </td>
-            <td>
-              <strong>
-                <?php echo anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']);?>
-                <?php ($post['post_status'] == 'draft')? print(' - <span class="post_state">Draft</span>') : print('')?>
-              </strong>
-              <div class="row_action">
-                <span><a href="#">View</a> |</span>
-                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/posts/edit/'.$post['ID']),'Edit');?> |</span>
-                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/posts/trash/'.$post['ID']),'Move to Trash','class="trash"');?> |</span>
-                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/posts/delete/'.$post['ID']),'Delete','class="delete"');?> </span>
+</div>
 
-              </div>
-            </td>
-            <td>
-              Admin
-            </td>
-            <td>
-              Category 1
-            </td>
-            <td>
-              <?php echo date('Y-m-d',strtotime($post['post_date'])); ?> <br>
-              Published
-            </td>
-          </tr>
-          <?php
-        endforeach;
-        endif
-        ?>
-      </tbody>
-    </table>
+<form class="form-inline" action="index.html" method="post">
+  <div class="form-group">
+    <select class="form-control input-sm" name="action">
+      <option value="-1">Bulk Actions</option>
+      <option value="trash">Public</option>
+      <option value="trash">Move to Trash</option>
+      <option value="trash">Delete</option>
+    </select>
   </div>
-
-  <form class="form-inline" action="index.html" method="post">
-    <div class="form-group">
-      <select class="form-control input-sm" name="action">
-        <option value="-1">Bulk Actions</option>
-        <option value="trash">Public</option>
-        <option value="trash">Move to Trash</option>
-        <option value="trash">Delete</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <button type="submit" class="btn btn-default btn-sm">Apply</button>
-    </div>
-  </form>
+  <div class="form-group">
+    <button type="submit" class="btn btn-default btn-sm">Apply</button>
+  </div>
+</form>

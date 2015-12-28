@@ -13,6 +13,7 @@ class Users extends Backend_controller {
 		$this->template
 		->title('User')
 		->set('users',$data)
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('users/index');
 	}
 	public function login(){
@@ -79,10 +80,92 @@ class Users extends Backend_controller {
 		delete_cookie($cookie);
 		redirect(site_url(),'refresh');
 	}
-	public function add($id = 0){
-		$this->load->view('welcome_message');
+	public function add(){
+		// Add User
+		$this->form_validation->set_rules('user_login', 'Username', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required');
+		$this->form_validation->set_rules('pass', 'Password', 'required');
+		if ($this->form_validation->run() == true) {
+			if ( preg_match('/\s/',$this->input->post('user_login')) ){
+				$this->session->set_flashdata('message', 'Fill username without whitespace.');
+			}elseif (!preg_match('/^[a-z0-9 .\-]+$/i',$this->input->post('user_login')) ) {
+				$this->session->set_flashdata('message', 'Fill username without pecial character.');
+			}elseif($this->user_m->get_a_name($this->input->post('user_login'))){
+				$this->session->set_flashdata('message', 'User is exits.');
+			}else {
+				if($this->user_m->addUser($this->input->post())){
+					$this->session->set_flashdata('message', 'Add user success!');
+					redirect(ADMIN_FOLDER.'/users');
+				}else {
+					$this->session->set_flashdata('message', 'Fail: Add user error.');
+				}
+			}
+		}
+		$this->template->set('user_login', array(
+			'name' => 'user_login',
+			'id' => 'user_login',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $this->form_validation->set_value('user_login'),
+		));
+
+		$this->template->set('email', array(
+			'name' => 'email',
+			'id' => 'email',
+			'type' => 'email',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $this->form_validation->set_value('email'),
+		));
+		$this->template->set('first_name', array(
+			'name' => 'first_name',
+			'id' => 'first_name',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $this->form_validation->set_value('first_name'),
+		));
+		$this->template->set('last_name', array(
+			'name' => 'last_name',
+			'id' => 'last_name',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $this->form_validation->set_value('last_name'),
+		));
+		$this->template->set('url', array(
+			'name' => 'url',
+			'id' => 'url',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $this->form_validation->set_value('url'),
+		));
+		$this->template->set('role', array(
+			'name' => 'role',
+			'option' => unserialize(ADMIN_ROLE),
+			'selected' => $this->form_validation->set_value('role') ? $this->form_validation->set_value('role'):'subscriber',
+			'extra' => array('class'=>'form-control input-sm','id'=>'role'),
+		));
+		$this->template->set('pass', array(
+			'name' => 'pass',
+			'id' => 'pass',
+			'type' => 'password',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => '',
+		));
+		$this->template
+		->title('Add user')
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('users/add');
 	}
 	public function delete(){
-		$this->load->view('welcome_message');
+
+		$this->template
+		->title('Edit user')
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('users/add');
 	}
 }
