@@ -4,7 +4,7 @@ class User_m extends CI_Model
   protected $_table = 'users';
   public function get_all($publish = '',$filter = array())
   {
-    $this->db->select('ID,user_login, user_email');
+    $this->db->select('ID,user_login, user_email,user_status');
     if($publish == 'public'){
       $this->db->where('user_status',0);
     }elseif ($publish == 'draft'){
@@ -43,9 +43,30 @@ class User_m extends CI_Model
     }
     return $result;
   }
+  function get_profile($id){
+    $this->db->select('ID,user_login,user_nicename,user_email,user_pass,user_url,display_name');
+    $this->db->where('ID',$id);
+    $result = $this->db->get($this->_table)->row();
+    if(!empty($result)){
+      $result->first_name = $this->get_user_meta($id,'first_name');
+      $result->last_name = $this->get_user_meta($id,'last_name');
+      $result->capabilities = $this->get_user_meta($id,'wp_capabilities');
+      $result->description = $this->get_user_meta($id,'description');
+    }
+    return $result;
+  }
   function get_a_name($name){
     $this->db->select('ID,user_login, user_email,user_pass');
     $this->db->where('user_login',$name);
+    $query = $this->db->get($this->_table);
+    return $query ->row();
+  }
+  function get_a_email($id= 0,$email){
+    $this->db->select('ID,user_login, user_email,user_pass');
+    $this->db->where('user_email',$email);
+    if($id != 0){
+      $this->db->where('ID <>',$id);
+    }
     $query = $this->db->get($this->_table);
     return $query ->row();
   }
@@ -131,6 +152,68 @@ class User_m extends CI_Model
       //END user update meta
       return true;
     }else {
+      return false;
+    }
+  }
+  function updateProfile($id,$post = array()){
+    $data = array(
+      'user_email' => trim($post['email']),
+      'user_url' => trim($post['url'])
+    );
+    if(isset($post['pass']) && !empty($post['pass'])){
+      require_once (APPPATH.'libraries/PasswordHash.php');
+      $wp_hasher = new PasswordHash(8, TRUE);
+      $pass = $wp_hasher->HashPassword(trim($post['pass']));
+      $data ['user_pass']  = $pass;
+    }
+    if(isset($post['nickname']) && !empty($post['nickname'])){
+      $data ['user_nicename' ] = trim($post['nickname']);
+    }
+    if(isset($post['display_name']) && !empty($post['display_name'])){
+      $data ['display_name' ] = trim($post['display_name']);
+    }
+    $this->db->where('ID', $id);
+    $this->db->update($this->_table, $data);
+    foreach ($post['meta'] as $k => $m) {
+      $chk_meta = $this->checkMetaKey($id,$k);
+      if($chk_meta){
+        if($k == 'wp_capabilities'){
+          $data1 = array(
+            'meta_value'=>serialize(array($m=>true))
+          );
+        }else {
+          $data1 = array(
+            'meta_value'=>$m
+          );
+        }
+        $this->db->where('umeta_id',$chk_meta[0]->umeta_id);
+        $this->db->update('usermeta',$data1);
+      }else {
+        if($k == 'wp_capabilities'){
+          $data1 = array(
+            'meta_key' =>$k,
+            'meta_value'=>serialize(array($m=>true))
+          );
+        }else {
+          $data1 = array(
+            'meta_key' =>$k,
+            'meta_value'=>$m
+          );
+        }
+        $this->db->insert('usermeta',$data1);
+      }
+    }
+  }
+  function checkMetaKey($uid,$key){
+    $this->db->select('umeta_id');
+    $this->db->where('meta_key', $key);
+    $this->db->where('user_id', $uid);
+    $this->db->limit(1);
+    $query = $this->db->get('usermeta');
+
+    if($query->result()){
+      return $query->result();
+    }else{
       return false;
     }
   }

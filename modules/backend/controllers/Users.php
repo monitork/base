@@ -124,6 +124,8 @@ class Users extends Backend_controller {
 				$this->session->set_flashdata('message', 'Fill username without pecial character.');
 			}elseif($this->user_m->get_a_name($this->input->post('user_login'))){
 				$this->session->set_flashdata('message', 'User is exits.');
+			}elseif($this->user_m->get_a_email(0,$this->input->post('email'))){
+				$this->session->set_flashdata('message', 'Email is exits.');
 			}else {
 				if($this->user_m->addUser($this->input->post())){
 					$this->session->set_flashdata('message', 'Add user success!');
@@ -194,13 +196,19 @@ class Users extends Backend_controller {
 		->build('users/add');
 	}
 	public function edit($id = 0){
+		$this->form_validation->set_rules('user_login', 'Username', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required');
 		if ($this->form_validation->run() == true) {
-
+			if($this->user_m->get_a_email($id,$this->input->post('email'))){
+				$this->session->set_flashdata('message', 'Email is exits.');
+			}else {
+				//Update
+				$this->user_m->updateProfile($id,$this->input->post());
+				$this->session->set_flashdata('message', 'Update user success!');
+			}
 		}
 		$user = $this->user_m->get_a_id($id);
-		if(!empty($user)){
-
-		}else {
+		if(empty($user)){
 			echo show_404();
 		}
 
@@ -210,6 +218,7 @@ class Users extends Backend_controller {
 			'type' => 'text',
 			'class' => 'form-control input-sm',
 			'size' => '40',
+			'readonly' => '',
 			'value' => $user->user_login,
 		));
 
@@ -222,7 +231,7 @@ class Users extends Backend_controller {
 			'value' => $user->user_email,
 		));
 		$this->template->set('first_name', array(
-			'name' => 'first_name',
+			'name' => 'meta[first_name]',
 			'id' => 'first_name',
 			'type' => 'text',
 			'class' => 'form-control input-sm',
@@ -230,7 +239,7 @@ class Users extends Backend_controller {
 			'value' => $user->first_name,
 		));
 		$this->template->set('last_name', array(
-			'name' => 'last_name',
+			'name' => 'meta[last_name]',
 			'id' => 'last_name',
 			'type' => 'text',
 			'class' => 'form-control input-sm',
@@ -246,7 +255,7 @@ class Users extends Backend_controller {
 			'value' => $user->user_url,
 		));
 		$this->template->set('role', array(
-			'name' => 'role',
+			'name' => 'meta[wp_capabilities]',
 			'option' => unserialize(ADMIN_ROLE),
 			'selected' => userRoleKey(unserialize($user->capabilities)),
 			'extra' => array('class'=>'form-control input-sm','id'=>'role'),
@@ -267,14 +276,21 @@ class Users extends Backend_controller {
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('users/add');
 	}
-	public function profile($id = 0){
+	public function profile(){
+		$this->form_validation->set_rules('user_login', 'Username', 'required');
+		$this->form_validation->set_rules('email', 'Email', 'required');
+		$this->form_validation->set_rules('nickname', 'Nickname', 'required');
+		$id = $this->session->userdata('fireant_admin_ss')['id'];
 		if ($this->form_validation->run() == true) {
-
+			if($this->user_m->get_a_email($id,$this->input->post('email'))){
+				$this->session->set_flashdata('message', 'Email is exits.');
+			}else {
+				//Update
+				$this->user_m->updateProfile($id,$this->input->post());
+				$this->session->set_flashdata('message', 'Update your profile success!');
+			}
 		}
-		if($id == 0){
-			$id = $this->session->userdata('fireant_admin_ss')['id'];
-		}
-		$user = $this->user_m->get_a_id($id);
+		$user = $this->user_m->get_profile($id);
 		if(!empty($user)){
 
 		}else {
@@ -287,6 +303,7 @@ class Users extends Backend_controller {
 			'type' => 'text',
 			'class' => 'form-control input-sm',
 			'size' => '40',
+			'readonly' => '',
 			'value' => $user->user_login,
 		));
 
@@ -299,7 +316,7 @@ class Users extends Backend_controller {
 			'value' => $user->user_email,
 		));
 		$this->template->set('first_name', array(
-			'name' => 'first_name',
+			'name' => 'meta[first_name]',
 			'id' => 'first_name',
 			'type' => 'text',
 			'class' => 'form-control input-sm',
@@ -307,12 +324,26 @@ class Users extends Backend_controller {
 			'value' => $user->first_name,
 		));
 		$this->template->set('last_name', array(
-			'name' => 'last_name',
+			'name' => 'meta[last_name]',
 			'id' => 'last_name',
 			'type' => 'text',
 			'class' => 'form-control input-sm',
 			'size' => '40',
 			'value' => $user->last_name,
+		));
+		$this->template->set('nickname', array(
+			'name' => 'nickname',
+			'id' => 'nickname',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'value' => $user->user_nicename,
+		));
+		$this->template->set('display_name', array(
+			'name' => 'display_name',
+			'option' => display_name(array($user->first_name,$user->last_name,$user->last_name.' '. $user->first_name,$user->first_name.' '.$user->last_name,$user->user_login)),
+			'selected' => $user->display_name,
+			'extra' => array('class'=>'form-control input-sm','id'=>'display_name'),
 		));
 		$this->template->set('url', array(
 			'name' => 'url',
@@ -322,11 +353,14 @@ class Users extends Backend_controller {
 			'size' => '40',
 			'value' => $user->user_url,
 		));
-		$this->template->set('role', array(
-			'name' => 'role',
-			'option' => unserialize(ADMIN_ROLE),
-			'selected' => userRoleKey(unserialize($user->capabilities)),
-			'extra' => array('class'=>'form-control input-sm','id'=>'role'),
+		$this->template->set('description', array(
+			'name' => 'meta[description]',
+			'id' => 'description',
+			'type' => 'textarea',
+			'class' => 'form-control input-sm',
+			'size' => '40',
+			'rows' => '5',
+			'value' => $user->description,
 		));
 		$this->template->set('pass', array(
 			'name' => 'pass',
@@ -345,7 +379,6 @@ class Users extends Backend_controller {
 		->build('users/profile');
 	}
 	public function delete(){
-
 		$this->template
 		->title('Delete user')
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))

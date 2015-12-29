@@ -46,9 +46,8 @@
     foreach ($users as $k => $u) {
       $this->table->add_row(
       form_checkbox('checkItem'.$u['ID'],$u['ID'],false,'id="checkItem_'.$u['ID'].'" class="check_item"'),
-      '<strong>'.anchor(ADMIN_FOLDER.'/users/profile/1',$u['user_login']).'<strong>
+      '<strong>'.anchor(ADMIN_FOLDER.'/users/profile/1',$u['user_login']).'<strong> '.(($u['user_status'] == '1')? '<span> draft</span>':'').'
       <div class="row_action">
-      <span><a href="#">View</a> |</span>
       <span>'.anchor(site_url(ADMIN_FOLDER.'/users/edit/'.$u['ID']),'Edit').' |</span>
       <span>'.anchor(site_url(ADMIN_FOLDER.'/users/delete/'.$u['ID']),'Delete','class="delete"').'</span>
       </div>',

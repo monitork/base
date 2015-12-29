@@ -59,3 +59,17 @@ if(!function_exists('userRoleKey')){
     }
   }
 }
+if(!function_exists('display_name')){
+  function display_name($array){
+    $arr = array();
+    if(!empty($array)){
+      foreach ($array as $value) {
+
+        if($value != null){
+          $arr[$value]= $value;
+        }
+      }
+    }
+    return $arr;
+  }
+}
