@@ -5,7 +5,7 @@
     </button>
     <?php echo $message; ?>
     <script type="text/javascript">
-      show_alert();
+    show_alert();
     </script>
   </div>
 <?php endif ?>
@@ -36,17 +36,16 @@
           </li>
           <li>
             <div class="status">
-              <i class="fa fa-rocket"></i> Status: <strong> <?php echo $page ->post_status;?>  <a href="#" onclick="show_form(this);">Edit</a></strong>
+              <i class="fa fa-rocket"></i> Status: <strong> <span><?php echo $page ->post_status;?> </span>  <a href="#" onclick="show_form(this);">Edit</a></strong>
             </div>
             <div class="status_form form-inline hidden">
               <div class="form-group">
                 <?php $status = unserialize(POST_STATUS);
                 echo form_dropdown('post_status',$status, $page ->post_status,'class="form-control input-sm b_status" data = "'.$page ->post_status.'" id = "post_status"');
                 ?>
-
               </div>
 
-              <div class="form-group"><button type="button" name="button" class="btn btn-sm btn-default" onclick="hide_form(this);">OK</button></div>
+              <div class="form-group"><button type="button" name="button" class="btn btn-sm btn-default" onclick="hide_form_status(this);">OK</button></div>
               <div class="form-group">  <a href="#" class="btn" onclick="cancel_status(this);">Cancel</a></div>
             </div>
           </li>
@@ -55,7 +54,7 @@
             <div class="date">
               <i class="fa fa-calendar"></i> Public on:
               <strong>
-                <?php echo date('M d, Y @ H:s',$datepubic);?> <a href="#" onclick="show_form(this);">Edit</a>
+                <span><?php echo date('M d, Y @ H:s',$datepubic);?></span> <a href="#" onclick="show_form(this);">Edit</a>
               </strong>
             </div>
             <div class="date_form  form-inline hidden">
@@ -78,7 +77,7 @@
                 <?php echo form_input('date[minute]',date('s',$datepubic),'class="input-sm form-control b_minute" id="date_minute"  data="'.date('s',$datepubic).'"');?>
               </div>
               <div class="form-group">
-                <button type="button" name="button" class="btn btn-sm btn-default" onclick="hide_form(this);">OK</button>
+                <button type="button" name="button" class="btn btn-sm btn-default" onclick="hide_form_date(this);">OK</button>
               </div>
               <div class="form-group">
                 <a href="#" class="btn" onclick="cancel_date(this);">Cancel</a>
@@ -90,7 +89,7 @@
       <div class="panel-footer">
         <?php echo form_hidden('uid', $page->post_author); ?>
         <?php echo form_submit('submit','Move to Trash','class="btn-sm btn"');?>
-        <?php echo form_submit('submit','Public','class="btn btn-primary btn-sm pull-right btn-sm"');?>
+        <?php echo form_submit('submit','Update','class="btn btn-primary btn-sm pull-right btn-sm"');?>
       </div>
     </div>
   </div>

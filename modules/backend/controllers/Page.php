@@ -7,6 +7,7 @@ class Page extends Backend_controller {
 		parent::__construct();
 		$this->load->model('page_m');
 	}
+	// -----------------------------LIST--------------------------------------
 	public function index()
 	{
 		$data = $this->page_m->get_all();
@@ -16,6 +17,34 @@ class Page extends Backend_controller {
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('page/index');
 	}
+	public function published()
+	{
+		$data = $this->page_m->get_all('publish');
+		$this->template
+		->title('Page')
+		->set('page',$data)
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('page/index');
+	}
+	public function draft()
+	{
+		$data = $this->page_m->get_all('draft');
+		$this->template
+		->title('Page')
+		->set('page',$data)
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('page/index');
+	}
+	public function trash()
+	{
+		$data = $this->page_m->get_all('trash');
+		$this->template
+		->title('Page')
+		->set('page',$data)
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('page/index');
+	}
+	// -----------------------------END LIST--------------------------------------
 
 	public function add(){
 		$this->form_validation->set_rules('post_title', 'Post title', 'trim|required|xss_clean');
@@ -54,7 +83,9 @@ class Page extends Backend_controller {
 		}
 		$this->form_validation->set_rules('post_title', 'Post title', 'trim|required|xss_clean');
 		if ($this->form_validation->run() == true) {
-
+			$this->page_m -> update($id,$this->input->post());
+			$this->session->set_flashdata('message','Update page success.');
+			redirect(site_url(ADMIN_FOLDER.'/page'),'refresh');
 		}
 		$this->template->set('title', array(
 			'name' => 'post_title',
@@ -79,6 +110,25 @@ class Page extends Backend_controller {
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('page/edit');
 	}
+	public function untrash($pid){
+		$page = $this->page_m->get_a_page($pid);
+		if(empty($page)){
+			show_404();
+			$this->page_m-> untrash($pid);
+			$this->session->set_flashdata('message','1 page restored from the Trash.');
+			redirect(current_url(),'refresh');
+		}
+	}
+	public function movetrash($pid){
+		$page = $this->page_m->get_a_page($pid);
+		if(empty($page)){
+			show_404();
+		}
+		$this->page_m-> movetrash($pid);
+		$this->session->set_flashdata('message','1 page moved to the Trash.');
+		redirect(current_url(),'refresh');
+	}
+	public function
 	public function delete(){
 		$this->load->view('welcome_message');
 	}

@@ -17,30 +17,19 @@
 </h1>
 <ul class="subsubsub">
   <li class="all">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/all'),'All <span class="count">(3)</span>','class="current"');?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page'),'All <span class="count">(3)</span>',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
   </li>
   <li class="publish">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/published'),'Published <span class="count">(2)</span>','class=""');?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/published'),'Published <span class="count">(2)</span>',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
   </li>
   <li class="draft">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/draft'),'Draft <span class="count">(1)</span>','class=""');?>
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
+  </li>
+  <li class="trash">
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/trash'),'Trash <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='trash')?'current':''));?>
   </li>
 </ul>
 <form class="form-inline">
-  <div class="form-group">
-    <select class="form-control input-sm" name="action">
-      <option value="-1">All dates</option>
-      <option value="trash">09/2015</option>
-      <option value="trash">10/2015</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <select class="form-control input-sm" name="action">
-      <option value="-1">All Categories</option>
-      <option value="trash">Category 1</option>
-      <option value="trash">Category 2</option>
-    </select>
-  </div>
   <div class="form-group">
     <input type="text" name="name" value="" class="form-control input-sm">
   </div>
@@ -50,70 +39,43 @@
 </form>
 <br class="clear">
 <div class="table-responsive">
-  <table class="table table-striped ">
-    <thead>
-      <tr>
-        <td>
-          <input type="checkbox" name="name" value="">
-        </td>
-        <td>
-          <a href="#">Title</a>
-        </td>
-        <td>
-          Author
-        </td>
-        <td>
-          <a href="#">Date</a>
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      <?php
-      if(isset($page) && !empty($page)):
-        foreach ($page as $key => $post) :
-          ?>
-          <tr>
-            <td>
-              <input type="checkbox" name="name" value="">
-            </td>
-            <td>
-              <strong>
-                <?php echo anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']);?>
-              </strong>
-              <div class="row_action">
-                <span><a href="#">View</a> |</span>
-                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/page/edit/'.$post['ID']),'Edit');?> |</span>
-                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/page/trash/'.$post['ID']),'Move to Trash','class="trash"');?> |</span>
-                <span><?php echo anchor(site_url(ADMIN_FOLDER.'/page/delete/'.$post['ID']),'Delete','class="delete"');?> </span>
-
-              </div>
-            </td>
-            <td>
-              Admin
-            </td>
-            <td>
-              <?php echo date('Y-m-d',strtotime($post['post_date'])); ?> <br>
-              Published
-            </td>
-          </tr>
-          <?php
-        endforeach;
-        endif
-        ?>
-      </tbody>
-    </table>
+  <?php
+  $this->load->library('table');
+  $this->table->set_heading(form_checkbox('checkAll','all',false,'id="checkAll"  onclick="check_all(this);"'),anchor('','Title'),'Date');
+  $template = array(
+    'table_open' => '<table class="table table-striped">',
+    'heading_cell_start'    => '<td>',
+    'heading_cell_end'      => '</td>',
+  );
+  $this->table->set_template($template);
+  if(isset($page) && !empty($page)){
+    foreach ($page as $key => $post) {
+      $this->table->add_row(
+      form_checkbox('checkItem'.$post['ID'],$post['ID'],false,'id="checkItem_'.$post['ID'].'" class="check_item"'),
+      '<strong>'.anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']) . (($post['post_status'] == 'draft')?' - draft':'').' </strong>'.
+      '<div class="row_action"> <span>'.anchor(site_url(ADMIN_FOLDER.'/page/edit/'.$post['ID']),'Edit'). ' |</span>'.
+      ' <span>'.anchor(site_url(ADMIN_FOLDER.'/page/trash/'.$post['ID']),'Move to Trash','class="trash"').' |</span>'.
+      ' <span>'.anchor(site_url(ADMIN_FOLDER.'/page/delete/'.$post['ID']),'Delete','class="delete"').'</span>'.
+      '</div>',
+      $post['user_login'],
+      date('Y-m-d',strtotime($post['post_date']))
+    );
+  }
+}else {
+  $this->table->add_row('No have content yet.','','','');
+}
+echo $this->table->generate();
+?>
+<form class="form-inline" action="index.html" method="post">
+  <div class="form-group">
+    <select class="form-control input-sm" name="action">
+      <option value="-1">Bulk Actions</option>
+      <option value="trash">Public</option>
+      <option value="trash">Move to Trash</option>
+      <option value="trash">Delete</option>
+    </select>
   </div>
-
-  <form class="form-inline" action="index.html" method="post">
-    <div class="form-group">
-      <select class="form-control input-sm" name="action">
-        <option value="-1">Bulk Actions</option>
-        <option value="trash">Public</option>
-        <option value="trash">Move to Trash</option>
-        <option value="trash">Delete</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <button type="submit" class="btn btn-default btn-sm">Apply</button>
-    </div>
-  </form>
+  <div class="form-group">
+    <button type="submit" class="btn btn-default btn-sm">Apply</button>
+  </div>
+</form>
