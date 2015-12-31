@@ -49,7 +49,6 @@ class Users extends Backend_controller {
 	}
 	//------------------------  END LIST -----------------------------------------
 	public function login(){
-		$this->load->helper('security');
 		if(!empty($this->session->userdata('fireant_admin_ss'))){
 			redirect(site_url(ADMIN_FOLDER),'refresh');
 		}

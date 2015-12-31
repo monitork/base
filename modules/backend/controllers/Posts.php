@@ -32,6 +32,15 @@ class Posts extends Backend_controller {
 		->set('posts', $data)
 		->build('content/index');
 	}
+
+	public function trash()
+	{
+		$data = $this->posts_m->get_all('trash');
+		$this->template
+		->title('Posts')
+		->set('posts', $data)
+		->build('content/index');
+	}
 	public function add(){
 
 		$data = $this->category_m->get_all('category');
@@ -43,9 +52,6 @@ class Posts extends Backend_controller {
 		->build('content/add');
 	}
 	public function edit($id = 0){
-		$this->load->view('welcome_message');
-	}
-	public function trash($id = 0){
 		$this->load->view('welcome_message');
 	}
 	public function delete($id = 0){

@@ -1,3 +1,14 @@
+<?php if ($message): ?>
+  <div class="alert alert-info alert_c">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <?php echo $message; ?>
+  </div>
+  <script type="text/javascript">
+  show_alert();
+  </script>
+<?php endif ?>
 <h1 class="tit">
   <?php
   echo $template['title'];

@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<?php echo site_url('assets/vendor/ckfinder/ckfinder.js');?>"></script>
 <script type="text/javascript">
 var button = document.getElementById( 'btnSelectImg' );
 button.onclick = function() {

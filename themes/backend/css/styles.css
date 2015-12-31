@@ -573,3 +573,25 @@ edit.phpmedia="all"
 .text-nomal{
   font-weight: 400;
 }
+.panel .b_minute,
+.panel .b_hour,
+.panel .b_date{
+  max-width: 36px;
+}
+.panel .b_year{
+  max-width: 54px;
+}
+.panel .b_month{
+  max-width: 70px;
+}
+.panel .b_status{
+  max-width: 100px;
+}
+.panel .form-inline .form-group{
+  display: inline-block;
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+.panel .date_form{
+  margin-top: 10px;
+}

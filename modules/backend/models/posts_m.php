@@ -11,6 +11,11 @@ class Posts_m extends CI_Model
     if($publish == 'draft'){
       $this->db->where('post_status','draft');
     }
+    if($publish == 'trash'){
+      $this->db->where('post_status','trash');
+    }else {
+      $this->db->where('post_status !=','trash');
+    }
     $this->db->where('post_type','post');
     $this->db->where('ping_status','open');
     $this->db->order_by('post_date','desc');

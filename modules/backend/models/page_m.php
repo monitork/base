@@ -11,4 +11,31 @@ class Page_m extends CI_Model
     $query = $this->db->get($this->_table);
     return $query ->result_array();
   }
+  public function get_a_page($id){
+    $this->db->select('p.ID,p.post_title,p.post_content,p.post_date, p.post_excerpt,p.post_status,p.post_name,p.post_type,p.post_author,u.user_login');
+    $this->db->from($this->_table .' as p');
+    $this->db->where('p.ID',$id);
+    $this->db->where('post_type','page');
+    $this->db->join('users as u', 'u.ID = p.post_author','left');
+    $result = $this->db->get()->row();
+    return $result;
+  }
+  public function insert($posts = array()){
+    if($posts['submit'] == 'Save'){
+      $data['post_status'] = $posts['post_status'];
+    }else {
+      $data['post_status'] = 'trash';
+    }
+    $data['post_title'] =  $posts['post_title'];
+    $data['post_name'] =  url_title(convert_accented_characters($posts['post_title']), '-', TRUE);
+    $data['post_content'] = $posts['content'];
+    $post_date = $posts['date']['year'] . '-'.$posts['date']['month'].'-'.$posts['date']['day'].' '.$posts['date']['hour'].':'.$posts['date']['minute'].':00';
+    $data['post_date'] = date('Y-m-d H:i:s',strtotime($post_date));
+    $data['post_modified'] = date('Y-m-d H:i:s',time());
+    $data['post_author'] = $posts['uid'];
+    $data['comment_status'] = 'closed';
+    $data['ping_status'] = 'open';
+    $data['post_type'] = 'page';
+    $this->db->insert($this->_table,$data);
+  }
 }

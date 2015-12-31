@@ -1,4 +1,5 @@
 <script src="<?php echo site_url('assets/vendor/ckeditor/ckeditor.js')?>"></script>
+<script type="text/javascript" src="<?php echo site_url('assets/vendor/ckfinder/ckfinder.js');?>"></script>
 <script type="text/javascript">
 $(function() {
   var editor = CKEDITOR.replace('editor1', {
@@ -13,7 +14,8 @@ $(function() {
     [
       ['Source','-', 'Bold', 'Italic', '-','TextColor','BGColor', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock', '-', 'NumberedList', 'BulletedList','Outdent','Indent', '-', 'Link', 'Unlink', '-','Image','Table','Maximize'],
       // ['Paste','PasteText','PasteFromWord'],
-    ]
+    ],
+    height: 350,
   });
   CKFinder.setupCKEditor( editor, "<?php echo site_url('assets/vendor/ckfinder/');?>" );
 });

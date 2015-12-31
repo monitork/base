@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('admin','form','text','cookie');
+$autoload['helper'] = array('admin','form','text','cookie','security');
 
 /*
 | -------------------------------------------------------------------
