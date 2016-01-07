@@ -42,7 +42,7 @@ class Page extends Backend_controller {
 		->title('Page')
 		->set('page',$data)
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
-		->build('page/index');
+		->build('page/trash');
 	}
 	// -----------------------------END LIST--------------------------------------
 
@@ -114,21 +114,20 @@ class Page extends Backend_controller {
 		$page = $this->page_m->get_a_page($pid);
 		if(empty($page)){
 			show_404();
-			$this->page_m-> untrash($pid);
-			$this->session->set_flashdata('message','1 page restored from the Trash.');
-			redirect(current_url(),'refresh');
 		}
+		$this->page_m->untrash($pid,$page);
+		$this->session->set_flashdata('message','1 page restored from the Trash.');
+		redirect(ADMIN_FOLDER.'/page','refresh');
 	}
 	public function movetrash($pid){
 		$page = $this->page_m->get_a_page($pid);
 		if(empty($page)){
 			show_404();
 		}
-		$this->page_m-> movetrash($pid);
+		$this->page_m->movetrash($pid,$page);
 		$this->session->set_flashdata('message','1 page moved to the Trash.');
-		redirect(current_url(),'refresh');
+		redirect(ADMIN_FOLDER.'/page/trash','refresh');
 	}
-	public function
 	public function delete(){
 		$this->load->view('welcome_message');
 	}

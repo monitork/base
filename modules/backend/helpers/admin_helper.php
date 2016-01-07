@@ -7,12 +7,13 @@ if ( ! function_exists('dropdown_from_array'))
 {
   function dropdown_from_array($array = array(),$selected = '')
   {
-    $str = '<select class="form-control input-sm" name"parent">';
+    $str = '<select class="form-control input-sm" name = "parent">';
+    $str .= '<option value = "0"> --Select parent--</option>';
     foreach ($array as $key => $item) {
-      $str .='<option value="'.$item['term_id'].'" '.(($selected == $item['term_id'])? 'selected':'').'>'.$item['name'].'</option>';
+      $str .='<option value="'.$item['term_id'].'" '.(($selected == $item['term_id'])? 'selected = "selected"':'').'>'.$item['name'].'</option>';
       if(isset($item['sub'])){
         foreach ($item['sub'] as $k => $sub) {
-          $str .='<option value="'.$sub['term_id'].'" '.(($selected == $sub['term_id'])? 'selected':'').'>  -- '.$sub['name'].'</option>';
+          $str .='<option value="'.$sub['term_id'].'" '.(($selected == $sub['term_id'])? 'selected = "selected"':'').'>  -- '.$sub['name'].'</option>';
         }
       }
     }
@@ -30,9 +31,9 @@ if ( ! function_exists('category_from_array'))
     $str = '<ul class="'.$class.'">';
     foreach ($array as $k => $item) {
       if(isset($item['sub'])){
-        $str .= '<li><input type="checkbox" '.(in_array($item['term_id'],$checked,TRUE)? 'checked': '').' name="category[]" id="category_' . $item['term_id'] . '" value = "' . $item['term_id'] . '"> <label for="category_' . $item['term_id'] . '"> ' . $item['name'] . '</label> ' . category_from_array($item['sub'], $item['term_id']) . '</li>';
+        $str .= '<li><input type="checkbox" '.(in_array($item['term_taxonomy_id'],$checked,TRUE)? 'checked': '').' name="category[]" id="category_' . $item['term_id'] . '" value = "' . $item['term_taxonomy_id'] . '"> <label for="category_' . $item['term_id'] . '"> ' . $item['name'] . '</label> ' . category_from_array($item['sub'], $item['term_id']) . '</li>';
       }else {
-        $str .= '<li><input type="checkbox" '.(in_array($item['term_id'],$checked,TRUE)? 'checked': '').' name="category[]" id="category_' . $item['term_id'] . '" value = "' . $item['term_id'] . '"> <label for="category_' . $item['term_id'] . '"> ' . $item['name'] . '</label> </li>';
+        $str .= '<li><input type="checkbox" '.(in_array($item['term_taxonomy_id'],$checked,TRUE)? 'checked': '').' name="category[]" id="category_' . $item['term_id'] . '" value = "' . $item['term_taxonomy_id'] . '"> <label for="category_' . $item['term_id'] . '"> ' . $item['name'] . '</label> </li>';
       }
     }
     $str .='</ul>';

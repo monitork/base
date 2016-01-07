@@ -15,7 +15,7 @@ $(function() {
       ['Source','-', 'Bold', 'Italic', '-','TextColor','BGColor', '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock', '-', 'NumberedList', 'BulletedList','Outdent','Indent', '-', 'Link', 'Unlink', '-','Image','Table','Maximize'],
       // ['Paste','PasteText','PasteFromWord'],
     ],
-    height: 350,
+    height: 250,
   });
   CKFinder.setupCKEditor( editor, "<?php echo site_url('assets/vendor/ckfinder/');?>" );
 });

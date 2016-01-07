@@ -13,20 +13,20 @@
   <?php
   echo $template['title'];
   ?>
-  <?php echo anchor(site_url(ADMIN_FOLDER.'/page/add'),'Add New','class="page-title-action"');?>
+  <?php echo anchor(site_url(ADMIN_FOLDER.'/'.$module.'/add'),'Add New','class="page-title-action"');?>
 </h1>
 <ul class="subsubsub">
   <li class="all">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page'),'All <span class="count">(3)</span>',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/'.$module),'All <span class="count">(3)</span>',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
   </li>
   <li class="publish">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/published'),'Published <span class="count">(2)</span>',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/'.$module.'/published'),'Published <span class="count">(2)</span>',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
   </li>
   <li class="draft">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/'.$module.'/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
   </li>
   <li class="trash">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/trash'),'Trash <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='trash')?'current':''));?>
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/'.$module.'/trash'),'Trash <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='trash')?'current':''));?>
   </li>
 </ul>
 <form class="form-inline">
@@ -48,16 +48,16 @@
     'heading_cell_end'      => '</td>',
   );
   $this->table->set_template($template);
-  if(isset($page) && !empty($page)){
-    foreach ($page as $key => $post) {
+  if($content['total']> 0){
+    foreach ($content['data'] as $key => $item) {
       $this->table->add_row(
-      form_checkbox('checkItem'.$post['ID'],$post['ID'],false,'id="checkItem_'.$post['ID'].'" class="check_item"'),
-      '<strong>'.anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']) . (($post['post_status'] == 'draft')?' - draft':'').' </strong>'.
-      '<div class="row_action"> <span>'.anchor(site_url(ADMIN_FOLDER.'/page/edit/'.$post['ID']),'Edit'). ' |</span>'.
-      ' <span>'.anchor(site_url(ADMIN_FOLDER.'/page/movetrash/'.$post['ID']),'Move to Trash','class="trash"').' </span>'.
+      form_checkbox('checkItem'.$item['ID'],$item['ID'],false,'id="checkItem_'.$item['ID'].'" class="check_item"'),
+      '<strong>'.anchor(site_url(ADMIN_FOLDER.'/'.$module.'/edit/'.$item['ID']),$item['post_title']) . (($item['post_status'] == 'draft')?' - draft':'').' </strong>'.
+      '<div class="row_action"> <span>'.anchor(site_url(ADMIN_FOLDER.'/'.$module.'/edit/'.$item['ID']),'Edit'). ' |</span>'.
+      ' <span>'.anchor(site_url(ADMIN_FOLDER.'/'.$module.'/movetrash/'.$item['ID']),'Move to Trash','class="trash"').' </span>'.
       '</div>',
-      $post['user_login'],
-      date('Y-m-d',strtotime($post['post_date']))
+      $item['user_login'],
+      date('Y-m-d',strtotime($item['post_date']))
     );
   }
 }else {

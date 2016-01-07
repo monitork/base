@@ -53,8 +53,9 @@
       $this->table->add_row(
       form_checkbox('checkItem'.$post['ID'],$post['ID'],false,'id="checkItem_'.$post['ID'].'" class="check_item"'),
       '<strong>'.anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']) . (($post['post_status'] == 'draft')?' - draft':'').' </strong>'.
-      '<div class="row_action"> <span>'.anchor(site_url(ADMIN_FOLDER.'/page/edit/'.$post['ID']),'Edit'). ' |</span>'.
-      ' <span>'.anchor(site_url(ADMIN_FOLDER.'/page/movetrash/'.$post['ID']),'Move to Trash','class="trash"').' </span>'.
+      '<div class="row_action">'.
+      ' <span>'.anchor(site_url(ADMIN_FOLDER.'/page/untrash/'.$post['ID']),'Restore','class="trash"').' |</span>'.
+      ' <span>'.anchor(site_url(ADMIN_FOLDER.'/page/delete/'.$post['ID']),'Delete','class="delete"').'</span>'.
       '</div>',
       $post['user_login'],
       date('Y-m-d',strtotime($post['post_date']))
