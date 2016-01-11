@@ -52,7 +52,7 @@ class Products extends Backend_controller {
 		if ($this->form_validation->run() == true) {
 			$this->product_m->insert($this->input->post());
 			$this->session->set_flashdata('message','Insert page success.');
-			redirect(site_url(ADMIN_FOLDER.'/product'),'refresh');
+			redirect(site_url(ADMIN_FOLDER.'/products'),'refresh');
 		}
 		$this->template->set('title', array(
 			'name' => 'post_title',
@@ -100,6 +100,76 @@ class Products extends Backend_controller {
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('product/add');
 	}
+	public function edit($id = 0){
+		$page = $this->product_m->get_a_product($id);
+		if(empty($page)){
+			show_404();
+		}
+		$this->form_validation->set_rules('post_title', 'Post title', 'trim|required|xss_clean');
+		if ($this->form_validation->run() == true) {
+			$this->product_m -> update($id,$this->input->post());
+			$this->session->set_flashdata('message','Update page success.');
+			redirect(site_url(ADMIN_FOLDER.'/products'),'refresh');
+		}
+		$this->template->set('title', array(
+			'name' => 'post_title',
+			'id' => 'title',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'placeholder'=>'Enter title here',
+			'value' => $page->post_title,
+		));
+		$this->template->set('content', array(
+			'name' => 'content',
+			'id' => 'editor1',
+			'type' => 'textarea',
+			'class' => 'form-control input-sm',
+			'rows'=>'10',
+			'value' => $page->post_content,
+		));
+		$this->template->set('sku', array(
+			'name' => 'product[sku]',
+			'id' => 'sku',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'value' => $page->sku,
+		));
+		$this->template->set('price', array(
+			'name' => 'product[price]',
+			'id' => 'price',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'value' => $page->price,
+		));
+		$this->template->set('sale_price', array(
+			'name' => 'product[sale_price]',
+			'id' => 'sale_price',
+			'type' => 'text',
+			'class' => 'form-control input-sm',
+			'value' => $page->sale_price,
+		));
+		$cate = $this->category_m->get_term_with_post($id);
+		$this->template
+		->title('Edit product')
+		->set_partial('ckeditor', 'partials/ckeditor')
+		->set('product',$page)
+		->set('category',$this->category_m->get_all('category_product'))
+		->set('color',$this->category_m->get_all('color_product'))
+		->set('size',$this->category_m->get_all('size_product'))
+		->set('cates',$cate)
+		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
+		->build('product/edit');
+	}
+	public function movetrash($id = 0){
+		$page = $this->page_m->get_a_page($pid);
+		if(empty($page)){
+			show_404();
+		}
+		$this->page_m->movetrash($pid,$page);
+		$this->session->set_flashdata('message','1 page moved to the Trash.');
+		redirect(ADMIN_FOLDER.'/products/trash','refresh');
+	}
+	# FUNCTION SUB
 	public function categories($id = 0)
 	{
 		$this->form_validation->set_rules('tag-name', 'Name', 'trim|required|xss_clean');
@@ -256,42 +326,5 @@ class Products extends Backend_controller {
 		->set('cates',$data)
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('product/size');
-	}
-	public function edit($id = 0){
-		$page = $this->product_m->get_a_page($id);
-		if(empty($page)){
-			show_404();
-		}
-		$this->form_validation->set_rules('post_title', 'Post title', 'trim|required|xss_clean');
-		if ($this->form_validation->run() == true) {
-			$this->product_m -> update($id,$this->input->post());
-			$this->session->set_flashdata('message','Update page success.');
-			redirect(site_url(ADMIN_FOLDER.'/product'),'refresh');
-		}
-		$this->template->set('title', array(
-			'name' => 'post_title',
-			'id' => 'title',
-			'type' => 'text',
-			'class' => 'form-control input-sm',
-			'placeholder'=>'Enter title here',
-			'value' => $page->post_title,
-		));
-		$this->template->set('content', array(
-			'name' => 'content',
-			'id' => 'editor1',
-			'type' => 'textarea',
-			'class' => 'form-control input-sm',
-			'rows'=>'10',
-			'value' => $page->post_content,
-		));
-		$this->template
-		->title('Edit product')
-		->set_partial('ckeditor', 'partials/ckeditor')
-		->set('page',$page)
-		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
-		->build('product/edit');
-	}
-	public function delete(){
-		$this->load->view('welcome_message');
 	}
 }

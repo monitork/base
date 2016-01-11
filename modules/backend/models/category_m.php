@@ -86,4 +86,17 @@ class category_m extends CI_Model
       return false;
     }
   }
+  public function get_term_with_post($pid){
+    $this->db->select('term_taxonomy_id');
+    $this->db->where('object_id', $pid);
+    $this->db->from('term_relationships');
+    $cates_id = $this->db->get()->result_array();
+    $result = array();
+    if($cates_id){
+      foreach ($cates_id as $key => $v) {
+        array_push($result,$v['term_taxonomy_id']);
+      }
+    }
+    return $result;
+  }
 }

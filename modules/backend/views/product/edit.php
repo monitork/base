@@ -39,20 +39,20 @@
               <div class="form-group">
                 <?php echo form_label('SKU','sku',array('class'=>'col-sm-4 control-label  text-nomal')); ?>
                 <div class="form-inline col-sm-8">
-                  <input type="text" name="price" id="price" value="" class="input-sm form-control">
+                  <?php echo form_input($sku);?>
                 </div>
               </div>
               <hr>
               <div class="form-group">
                 <?php echo form_label('Regular Price' ,'color',array('class'=>'col-sm-4 control-label text-nomal')); ?>
                 <div class="form-inline col-sm-8">
-                  <input type="text" name="price" id="price" value="" class="input-sm form-control">
+                  <?php echo form_input($price);?>
                 </div>
               </div>
               <div class="form-group">
                 <?php echo form_label('Sale Price' ,'color',array('class'=>'col-sm-4 control-label  text-nomal')); ?>
                 <div class="form-inline col-sm-8">
-                  <input type="text" name="price" id="price" value="" class="input-sm form-control">
+                  <?php echo form_input($sale_price);?>
                 </div>
               </div>
             </div>
@@ -61,13 +61,11 @@
                 <?php echo form_label('Color','color',array('class'=>'col-sm-3 control-label')); ?>
                 <div class="form-inline col-sm-9">
                   <?php  if(isset($color)){
-
                     foreach ($color as $key => $c) {
                       echo '<div class= "checkbox">';
-                      echo form_label(form_checkbox('color[]', $c['term_id'], FALSE,'id="color_'.$c['term_id'].'"').$c['name']. ' ','color_'.$c['term_id'],'class="text-nomal"');
+                      echo form_label(form_checkbox('cates[]', $c['term_taxonomy_id'], in_array($c['term_taxonomy_id'],$cates,TRUE)? TRUE: FALSE,'id="color_'.$c['term_taxonomy_id'].'"').$c['name']. ' ','color_'.$c['term_taxonomy_id'],'class="text-nomal"');
                       echo '</div>';
                     }
-
                   }else {
                     echo "No have Color";
                   }?>
@@ -77,10 +75,9 @@
                 <?php echo form_label('Size','size',array('class'=>'col-sm-3 control-label')); ?>
                 <div class="form-inline col-sm-9">
                   <?php  if(isset($size)){
-
                     foreach ($size as $m => $z) {
                       echo '<div class= "checkbox">';
-                      echo form_label(form_checkbox('size[]', $z['term_id'], FALSE,'id="size_'.$z['term_id'].'"').$z['name']. ' ','size_'.$z['term_id'],'class="text-nomal"');
+                      echo form_label(form_checkbox('cates[]', $z['term_taxonomy_id'], in_array($z['term_taxonomy_id'],$cates,TRUE)? TRUE: FALSE,'id="size_'.$z['term_taxonomy_id'].'"').$z['name']. ' ','size_'.$z['term_taxonomy_id'],'class="text-nomal"');
                       echo '</div>';
                     }
 
@@ -173,13 +170,15 @@
       <div class="panel-footer">
         <?php echo form_hidden('uid', $this->session->userdata('fireant_admin_ss')['id']); ?>
         <?php echo form_submit('submit','Move to Trash','class="btn-sm btn"');?>
-        <?php echo form_submit('submit','Save','class="btn btn-primary btn-sm pull-right btn-sm"');?>
+        <?php echo form_submit('submit','Update','class="btn btn-primary btn-sm pull-right btn-sm"');?>
       </div>
     </div>
     <div class="panel panel-default">
       <div class="panel-heading"><h4 class="box">Categories</h4> </div>
       <div class="panel-body">
-        <?php if(!empty($category)){ echo category_from_array($category);}?>
+        <?php
+        if(!empty($category)){ echo category_from_array($category,0,$cates);}
+        ?>
       </div>
     </div>
   </div>

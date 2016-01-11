@@ -48,8 +48,8 @@
     'heading_cell_end'      => '</td>',
   );
   $this->table->set_template($template);
-  if($content['total']> 0){
-    foreach ($content['data'] as $key => $item) {
+  if(!empty($content)){
+    foreach ($content as $key => $item) {
       $this->table->add_row(
       form_checkbox('checkItem'.$item['ID'],$item['ID'],false,'id="checkItem_'.$item['ID'].'" class="check_item"'),
       '<strong>'.anchor(site_url(ADMIN_FOLDER.'/'.$module.'/edit/'.$item['ID']),$item['post_title']) . (($item['post_status'] == 'draft')?' - draft':'').' </strong>'.

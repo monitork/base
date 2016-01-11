@@ -30,7 +30,11 @@ class User_m extends CI_Model
     $this->db->where('user_id',$uid);
     $this->db->where('meta_key',$key);
     $result = $this->db ->get('usermeta') ->row();
-    return $result->meta_value;
+    if($result){
+      return $result->meta_value;
+    }else{
+      return '';
+    }
   }
   function get_a_id($id){
     $this->db->select('ID,user_login, user_email,user_pass,user_url');

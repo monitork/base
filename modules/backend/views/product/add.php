@@ -63,7 +63,7 @@
                   <?php  if(isset($color)){
                     foreach ($color as $key => $c) {
                       echo '<div class= "checkbox">';
-                      echo form_label(form_checkbox('color[]', $c['term_taxonomy_id'], FALSE,'id="color_'.$c['term_taxonomy_id'].'"').$c['name']. ' ','color_'.$c['term_taxonomy_id'],'class="text-nomal"');
+                      echo form_label(form_checkbox('cates[]', $c['term_taxonomy_id'], FALSE,'id="color_'.$c['term_taxonomy_id'].'"').$c['name']. ' ','color_'.$c['term_taxonomy_id'],'class="text-nomal"');
                       echo '</div>';
                     }
                   }else {
@@ -77,7 +77,7 @@
                   <?php  if(isset($size)){
                     foreach ($size as $m => $z) {
                       echo '<div class= "checkbox">';
-                      echo form_label(form_checkbox('size[]', $z['term_taxonomy_id'], FALSE,'id="size_'.$z['term_taxonomy_id'].'"').$z['name']. ' ','size_'.$z['term_taxonomy_id'],'class="text-nomal"');
+                      echo form_label(form_checkbox('cates[]', $z['term_taxonomy_id'], FALSE,'id="size_'.$z['term_taxonomy_id'].'"').$z['name']. ' ','size_'.$z['term_taxonomy_id'],'class="text-nomal"');
                       echo '</div>';
                     }
 

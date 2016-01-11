@@ -22,17 +22,21 @@ class Product_m extends CI_Model
     $this->db->where('p.post_status !=','auto-draft');
     $this->db->where('p.post_status !=','inherit');
     $this->db->where('p.post_type','product');
-    $result['data'] = $this->db->get()->result_array();
-    $result['total'] =  $this->db->count_all();
+    $result = $this->db->get()->result_array();
     return $result;
   }
   public function get_a_product($id){
     $this->db->select('p.ID,p.post_title,p.post_content,p.post_date, p.post_excerpt,p.post_status,p.post_name,p.post_type,p.post_author,u.user_login');
     $this->db->from($this->_table .' as p');
     $this->db->where('p.ID',$id);
-    $this->db->where('post_type','page');
+    $this->db->where('post_type','product');
     $this->db->join('users as u', 'u.ID = p.post_author','left');
     $result = $this->db->get()->row();
+    if(!empty($result)){
+      $result->sku = $this->get_post_meta($id,'sku');
+      $result->price = $this->get_post_meta($id,'price');
+      $result->sale_price = $this->get_post_meta($id,'sale_price');
+    }
     return $result;
   }
   public function insert($posts = array()){
@@ -55,28 +59,15 @@ class Product_m extends CI_Model
     $data['post_type'] = 'product';
     $this->db->insert($this->_table,$data);
     $id = $this->db->insert_id();
-    if(isset($posts['category'])){
-      foreach ($posts['category'] as $cate) {
+    if(isset($posts['cates'])){
+      foreach ($posts['cates'] as $cate) {
         $data_00[] = array(
           'object_id' => $id,
           'term_taxonomy_id' => $cate
         );
       }
-    }
-    if(isset($posts['color'])){
-      foreach ($posts['color'] as $color) {
-        $data_00[] = array(
-          'object_id' => $id,
-          'term_taxonomy_id' => $color
-        );
-      }
-    }
-    if(isset($posts['size'])){
-      foreach ($posts['size'] as $size) {
-        $data_00[] = array(
-          'object_id' => $id,
-          'term_taxonomy_id' => $size
-        );
+      if(!empty($data_00)){
+        $this->db->insert_batch('term_relationships',$data_00);
       }
     }
     if(isset($posts['product'])){
@@ -84,19 +75,16 @@ class Product_m extends CI_Model
         $data_01[] = array(
           'post_id' => $id,
           'meta_key' => $k,
-          'meta_vaule' => $p
+          'meta_value' => $p
         );
       }
-    }
-    if(!empty($data_00)){
-      $this->db->insert('term_relationships',$data_00);
-    }
-    if(!empty($data_01)){
-      $this->db->insert('postmeta',$data_01);
+      if(!empty($data_01)){
+        $this->db->insert_batch('postmeta',$data_01);
+      }
     }
   }
   public function update($pid,$posts = array()){
-    if($posts['submit'] == 'Update'){
+    if($posts['submit'] == 'Update' || $posts['submit'] == 'Save'){
       $data['post_status'] = $posts['post_status'];
     }else {
       $data['post_status'] = 'trash';
@@ -110,9 +98,44 @@ class Product_m extends CI_Model
     $data['post_author'] = $posts['uid'];
     $data['comment_status'] = 'closed';
     $data['ping_status'] = 'open';
-    $data['post_type'] = 'page';
+    $data['post_type'] = 'product';
     $this->db->where('ID',$pid);
     $this->db->update($this->_table,$data);
+    /// Get all category by id to array
+    // Check post category in array. if in array -> pass else --> insert
+    if(isset($posts['cates'])){
+      foreach ($posts['cates'] as $cate) {
+        $data_00[] = array(
+          'object_id' => $pid,
+          'term_taxonomy_id' => $cate
+        );
+      }
+      if(!empty($data_00)){
+        // Delete before
+        $this->db->delete('term_relationships', array('object_id' => $pid));
+        //Then insert
+        $this->db->insert_batch('term_relationships',$data_00);
+      }
+    }
+    if(isset($posts['product'])){
+      foreach ($posts['product']  as $k  => $p) {
+        // if exit -->update else insert.
+        $data_01 = array(
+          'post_id' => $pid,
+          'meta_key' => $k,
+          'meta_value' => $p
+        );
+        if($check = $this->checkMetaKey($k,$pid)){
+          //update if eixit.
+          $this->db-> where('meta_id',$check->meta_id);
+          $this->db->update('postmeta',$data_01);
+        }else {
+          // Insert if not exit.
+          $this->db->insert('postmeta',$data_01);
+        }
+      }
+
+    }
   }
   public function movetrash($pid,$page)
   {
@@ -128,16 +151,26 @@ class Product_m extends CI_Model
     $this->db->where('ID',$pid);
     $this->db->update($this->_table,$data);
   }
-  function checkSlug($slug,$id){
+  function checkMetaKey($slug,$id){
     $this->db->select('meta_id');
     $this->db->where('meta_key', $slug);
     $this->db->where('post_id',$id);
-    $query = $this->db->get($this->_table)->row();
-
-    if($query->result()){
-      return $query->result();
+    $query = $this->db->get('postmeta')->row();
+    if($query){
+      return $query;
     }else{
       return false;
+    }
+  }
+  function get_post_meta($pid, $key)
+  {
+    $this->db->where('meta_key',$key);
+    $this->db->where('post_id',$pid);
+    $meta = $this->db->get('postmeta') -> row();
+    if($meta){
+      return $meta->meta_value;
+    }else {
+      return '';
     }
   }
 }
