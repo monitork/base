@@ -36,6 +36,7 @@ class Product_m extends CI_Model
       $result->sku = $this->get_post_meta($id,'sku');
       $result->price = $this->get_post_meta($id,'price');
       $result->sale_price = $this->get_post_meta($id,'sale_price');
+      $result->image = $this->get_post_meta($id,'image');
     }
     return $result;
   }
@@ -150,6 +151,14 @@ class Product_m extends CI_Model
     $data['post_name'] = url_title(convert_accented_characters($page ->post_title), '-', TRUE);
     $this->db->where('ID',$pid);
     $this->db->update($this->_table,$data);
+  }
+  public function delete($pid){
+    //Delete meta
+    $this->db->delete('term_relationships', array('post_id' => $pid));
+    //Delete category
+    $this->db->delete('term_relationships', array('object_id' => $pid));
+    //Delete post
+    $this->db->delete($this->_table, array('ID' => $pid));
   }
   function checkMetaKey($slug,$id){
     $this->db->select('meta_id');

@@ -17,16 +17,16 @@
 </h1>
 <ul class="subsubsub">
   <li class="all">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page'),'All <span class="count">(3)</span>',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page'),'All',array('class'=>($this->uri->segment(3) =='')?'current':''));?>  |
   </li>
   <li class="publish">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/published'),'Published <span class="count">(2)</span>',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/published'),'Published',array('class'=>($this->uri->segment(3) =='published')?'current':''));?>  |
   </li>
   <li class="draft">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/draft'),'Draft <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?>
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/draft'),'Draft',array('class'=>($this->uri->segment(3) =='draft')?'current':''));?> |
   </li>
   <li class="trash">
-    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/trash'),'Trash <span class="count">(1)</span>',array('class'=>($this->uri->segment(3) =='trash')?'current':''));?>
+    <?php echo anchor(site_url(ADMIN_FOLDER.'/page/trash'),'Trash',array('class'=>($this->uri->segment(3) =='trash')?'current':''));?>
   </li>
 </ul>
 <form class="form-inline">
@@ -52,7 +52,7 @@
     foreach ($page as $key => $post) {
       $this->table->add_row(
       form_checkbox('checkItem'.$post['ID'],$post['ID'],false,'id="checkItem_'.$post['ID'].'" class="check_item"'),
-      '<strong>'.anchor(site_url(ADMIN_FOLDER.'/edit/'.$post['ID']),$post['post_title']) . (($post['post_status'] == 'draft')?' - draft':'').' </strong>'.
+      '<strong>'.anchor(site_url(ADMIN_FOLDER.'/page/edit/'.$post['ID']),$post['post_title']) . (($post['post_status'] == 'draft')?' - draft':'').' </strong>'.
       '<div class="row_action"> <span>'.anchor(site_url(ADMIN_FOLDER.'/page/edit/'.$post['ID']),'Edit'). ' |</span>'.
       ' <span>'.anchor(site_url(ADMIN_FOLDER.'/page/movetrash/'.$post['ID']),'Move to Trash','class="trash"').' </span>'.
       '</div>',

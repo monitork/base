@@ -179,7 +179,21 @@
         <?php if(!empty($category)){ echo category_from_array($category);}?>
       </div>
     </div>
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4 class="box">Image feature</h4> </div>
+      <div class="panel-body">
+        <div class="" id="output">
+
+        </div>
+        <a href="javascript:void(0)" id="btnSelectImg">Set feature image</a>
+        <script type="text/javascript">
+        var urls =[];
+        </script>
+        <input type="hidden" name="product[image]" id="product_image" value="" autocomplete='off'>
+      </div>
+    </div>
   </div>
   <?php echo form_close();?>
 </div>
 <?php echo $template['partials']['ckeditor']; ?>
+<?php echo $template['partials']['ckfinder_product']; ?>

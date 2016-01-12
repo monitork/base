@@ -181,7 +181,37 @@
         ?>
       </div>
     </div>
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4 class="box">Image feature</h4> </div>
+      <div class="panel-body">
+        <?php if(isset($product->image)):?>
+          <div class="" id="output">
+            <ul class="image_thum">
+              <?php $images = explode(',',$product->image);
+              $total = count($images);
+              $html_image = '';
+              foreach ($images as $x => $img):
+                if($total - 1 == $x){
+                  $html_image .= '"'.$img.'"';
+                }else {
+                  $html_image .= '"'.$img.'",';
+                }
+                ?>
+                <li><img src="<?php echo $img;?>"/><a href="javascript:void(0)" class="delete" onClick = "deleteClick(this)"></a></li>
+              <?php endforeach;?>
+            </ul>
+            <script type="text/javascript">
+            var urls = [<?php echo $html_image;?>];
+            </script>
+          </div>
+          <input type="hidden" name="product[image]" id="product_image" value="<?php echo $product->image;?>" autocomplete='off'>
+
+        <?php endif;?>
+        <a href="javascript:void(0)" id="btnSelectImg">Set feature image</a>
+      </div>
+    </div>
   </div>
   <?php echo form_close();?>
 </div>
 <?php echo $template['partials']['ckeditor']; ?>
+<?php echo $template['partials']['ckfinder_product']; ?>

@@ -24,7 +24,7 @@ class category_m extends CI_Model
   }
   public function get_a_cate($tid)
   {
-    $this->db->select('t.name,tt.description,tt.parent');
+    $this->db->select('t.name,tt.description,tt.parent,tt.term_taxonomy_id');
     $this->db->from($this->_table .' as t');
     $this->db->where('t.term_id',$tid);
     $this->db->join('term_taxonomy as tt', 'tt.term_id = t.term_id','left');
@@ -98,5 +98,14 @@ class category_m extends CI_Model
       }
     }
     return $result;
+  }
+  public function delete($tid,$cate){
+    $term_taxonomy_id = $cate->term_taxonomy_id;
+    //Delete relationship
+    $this->db->delete('term_relationships',array('term_taxonomy_id',$term_taxonomy_id));
+    //Delete Term taxonomy
+    $this->db->delete('term_taxonomy',array('term_id',$tid));
+    //Delete Term
+    $this->db->delete('terms', array('term_id',$tid));
   }
 }

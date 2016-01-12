@@ -54,7 +54,9 @@ th {
 .table-responsive {
   border-top: 1px solid #dddddd;
 }
-
+.table .row_action{
+  min-width: 150px
+}
 .toolbar {
   font-family: "Source Sans Pro", "Lucida Grande", Verdana, sans-serif;
   background-color: #0f0f0f;
@@ -570,8 +572,47 @@ edit.phpmedia="all"
   max-height: 200px;
   overflow: hidden;
 }
+#output
 .text-nomal{
   font-weight: 400;
+}
+#output ul.image_thum{
+  margin: 0;
+  padding: 0;
+}
+#output ul.image_thum li{
+  position: relative;
+  width: 80px;
+  height: 80px;
+  box-sizing: border-box;
+  border-radius: 2;
+  border: 1px solid #d5d5d5;
+  margin: 9px 9px 0 0;
+  float: left;
+  overflow: hidden;
+}
+#output ul.image_thum li .delete{
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  padding: 2px;
+  display: none;
+  text-decoration: none;
+}
+#output ul.image_thum li .delete::after{
+  height: 19px;
+  width: 19px;
+  background: #000;
+  color: #FFF;
+  content: "x";
+  border-radius: 15px;
+  border: 1px solid #FFF;
+  display: block;
+  text-align: center;
+  line-height: 13px;
+}
+#output ul.image_thum li:hover .delete{
+  display: block;
 }
 .panel .b_minute,
 .panel .b_hour,

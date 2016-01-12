@@ -17,7 +17,7 @@
 
 </h1>
 <div class="row">
-  <div class="col-md-5">
+  <div class="col-md-4">
     <?php echo form_open(current_url());?>
     <div class="form_group">
       <?php echo form_label('Name','tag-name',array('class'=>'text-nomal')); echo form_input($tag_name);?>
@@ -42,7 +42,7 @@
     </div>
     <?php echo form_close();?>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-8">
     <form class="form-inline">
       <div class="form-group">
         <input type="text" class="form-control input-sm" value="" name="name">

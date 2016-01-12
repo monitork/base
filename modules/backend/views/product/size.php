@@ -62,7 +62,7 @@
           <div class="row_action">
           <span>'.anchor(site_url($cate['slug']),'View').' |</span>
           <span>'.anchor(site_url(ADMIN_FOLDER.'/'.$module.'/size/'.$cate['term_id']),'Edit').' |</span>
-          <span>'.anchor(site_url(ADMIN_FOLDER.'/'.$module.'/size_delete/'.$cate['term_id']),'Delete','class="delete"').'</span>
+          <span>'.anchor(site_url(ADMIN_FOLDER.'/'.$module.'/cate_delete/'.$cate['term_id']),'Delete','class="delete"').'</span>
           </div>',
           $cate['description'],$cate['slug'],$cate['count']
         );

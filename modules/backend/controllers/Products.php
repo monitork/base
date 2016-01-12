@@ -97,6 +97,7 @@ class Products extends Backend_controller {
 		->set('color',$this->category_m->get_all('color_product'))
 		->set('size',$this->category_m->get_all('size_product'))
 		->set_partial('ckeditor', 'partials/ckeditor')
+		->set_partial('ckfinder_product', 'partials/ckfinder_product')
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('product/add');
 	}
@@ -152,6 +153,7 @@ class Products extends Backend_controller {
 		$this->template
 		->title('Edit product')
 		->set_partial('ckeditor', 'partials/ckeditor')
+		->set_partial('ckfinder_product', 'partials/ckfinder_product')
 		->set('product',$page)
 		->set('category',$this->category_m->get_all('category_product'))
 		->set('color',$this->category_m->get_all('color_product'))
@@ -160,16 +162,36 @@ class Products extends Backend_controller {
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('product/edit');
 	}
-	public function movetrash($id = 0){
-		$page = $this->page_m->get_a_page($pid);
+	public function untrash($pid = 0)
+	{
+		$page = $this->product_m->get_a_product($pid);
 		if(empty($page)){
 			show_404();
 		}
-		$this->page_m->movetrash($pid,$page);
+		$this->product_m->untrash($pid,$page);
+		$this->session->set_flashdata('message','1 page restored from the Trash.');
+		redirect(ADMIN_FOLDER.'/products','refresh');
+	}
+	public function movetrash($pid = 0){
+		$page = $this->product_m->get_a_product($pid);
+		if(empty($page)){
+			show_404();
+		}
+		$this->product_m->movetrash($pid,$page);
 		$this->session->set_flashdata('message','1 page moved to the Trash.');
 		redirect(ADMIN_FOLDER.'/products/trash','refresh');
 	}
-	# FUNCTION SUB
+	public function delete($pid=0)
+	{
+		$page = $this->product_m->get_a_product($pid);
+		if(empty($page)){
+			show_404();
+		}
+		$this->product_m->delete($pid);
+		$this->session->set_flashdata('message','1 page was Deleted.');
+		redirect(ADMIN_FOLDER.'/products/trash','refresh');
+	}
+	# FUNCTION categories
 	public function categories($id = 0)
 	{
 		$this->form_validation->set_rules('tag-name', 'Name', 'trim|required|xss_clean');
@@ -326,5 +348,22 @@ class Products extends Backend_controller {
 		->set('cates',$data)
 		->set('message', (validation_errors()) ? validation_errors() : $this->session->flashdata('message'))
 		->build('product/size');
+	}
+	public function cate_delete($id = 0)
+	{
+		# code...
+		$cate =  $this->category_m->get_a_cate($id);
+		if(!$cate){
+			show_404();
+		}else {
+			$this->category_m->delete($id,$cate);
+			if($cate->taxonomy == 'category_product'){
+				redirect(site_url(ADMIN_FOLDER.'/products/categories'),'refresh');
+			}elseif ($cate->taxonomy == 'color_product') {
+				redirect(site_url(ADMIN_FOLDER.'/products/color'),'refresh');
+			}else {
+				redirect(site_url(ADMIN_FOLDER.'/products/size'),'refresh');
+			}
+		}
 	}
 }
