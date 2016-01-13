@@ -160,7 +160,7 @@ class Product_m extends CI_Model
     //Delete post
     $this->db->delete($this->_table, array('ID' => $pid));
   }
-  function checkMetaKey($slug,$id){
+  public function checkMetaKey($slug,$id){
     $this->db->select('meta_id');
     $this->db->where('meta_key', $slug);
     $this->db->where('post_id',$id);
@@ -171,7 +171,7 @@ class Product_m extends CI_Model
       return false;
     }
   }
-  function get_post_meta($pid, $key)
+  public function get_post_meta($pid, $key)
   {
     $this->db->where('meta_key',$key);
     $this->db->where('post_id',$pid);

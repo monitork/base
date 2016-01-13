@@ -6,6 +6,7 @@ class Frontend_Controller extends My_Controller
   {
     parent::__construct();
     $this->load->library('breadcrumbs');
+    $this->load->helper('frontend');
     $this->template
     ->enable_parser(FALSE)
     ->set_theme('foo')
